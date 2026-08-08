@@ -101,6 +101,7 @@ export function OpeningAnimation({ onDone }: { onDone: () => void }) {
             className="absolute left-1/2 top-1/2"
             style={{ transform: `rotate(${d.a}deg) translateY(-86px) rotate(${-d.a}deg)` }}
           >
+            <div style={{ animation: "ring 14s linear infinite reverse" }}>
             <div style={{ animation: "dancerIn 3.6s ease-out both" }}>
             <svg width="46" height="70" viewBox="0 0 46 70" style={{ marginLeft: -23, marginTop: -35 }}>
               <g style={{ transformOrigin: "23px 60px", animation: "sway 1.4s ease-in-out infinite" }}>
@@ -113,6 +114,7 @@ export function OpeningAnimation({ onDone }: { onDone: () => void }) {
                 <path d="M29 24 q12 6 13 18" stroke="#8a5a3b" strokeWidth="3.2" fill="none" strokeLinecap="round" />
               </g>
             </svg>
+            </div>
             </div>
           </div>
         ))}
