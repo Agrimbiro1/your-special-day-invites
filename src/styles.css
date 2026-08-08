@@ -142,3 +142,76 @@
     color: var(--color-foreground);
   }
 }
+
+@theme {
+  --font-display: "Cormorant Garamond", serif;
+  --font-body: "Karla", sans-serif;
+  --color-ink: oklch(0.32 0.045 45);
+  --color-gold: oklch(0.68 0.1 80);
+  --color-rose: oklch(0.72 0.09 20);
+  --color-leaf: oklch(0.45 0.08 145);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body {
+  background: oklch(0.22 0.03 150);
+  font-family: var(--font-body);
+}
+
+@keyframes sway {
+  0%, 100% { transform: rotate(-2.2deg); }
+  50% { transform: rotate(2.2deg); }
+}
+@keyframes drift {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(6px, -8px, 0); }
+}
+@keyframes flap {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.35); }
+}
+@keyframes flyacross {
+  0% { transform: translate(-15vw, 12vh) scale(0.7); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translate(115vw, -6vh) scale(1); opacity: 0; }
+}
+@keyframes petalfall {
+  0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.85; }
+  100% { transform: translateY(105vh) rotate(320deg); opacity: 0; }
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.7; }
+}
+@keyframes softin {
+  from { opacity: 0; transform: translateY(14px) scale(0.985); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes spinslow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes flipdown {
+  from { transform: translateY(-55%) scale(0.9); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+
+@utility anim-soft-in {
+  animation: softin 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@utility glass-panel {
+  background: color-mix(in oklab, white 62%, transparent);
+  backdrop-filter: blur(14px) saturate(1.2);
+  border: 1px solid color-mix(in oklab, var(--color-gold) 45%, transparent);
+  box-shadow: 0 18px 40px -22px oklch(0.3 0.05 60 / 0.55);
+}
