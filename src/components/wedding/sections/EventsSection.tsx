@@ -5,7 +5,7 @@ import { Divider, Panel, SectionTitle } from "../ui";
 
 export function EventsSection() {
   const [i, setI] = useState(0);
-  const e = EVENTS[i];
+  const e = EVENTS[i]!;
   const go = (d: number) => setI((p) => (p + d + EVENTS.length) % EVENTS.length);
 
   return (
