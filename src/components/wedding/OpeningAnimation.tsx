@@ -86,10 +86,7 @@ export function OpeningAnimation({ onDone }: { onDone: () => void }) {
       </div>
 
       {/* four dancers circling */}
-      <div
-        className="absolute left-1/2 top-1/2 h-[190px] w-[190px] -translate-x-1/2 -translate-y-[38%]"
-        style={{ animation: "ring 14s linear infinite" }}
-      >
+      <div className="absolute left-1/2 top-1/2 h-[190px] w-[190px] -translate-x-1/2 -translate-y-[38%]">
         {[
           { c: "#c8332f", a: 0 },
           { c: "#e0a92b", a: 90 },
@@ -99,9 +96,13 @@ export function OpeningAnimation({ onDone }: { onDone: () => void }) {
           <div
             key={d.a}
             className="absolute left-1/2 top-1/2"
-            style={{ transform: `rotate(${d.a}deg) translateY(-86px) rotate(${-d.a}deg)` }}
+            style={{
+              transform: `translate(${86 * Math.cos(((d.a - 90) * Math.PI) / 180)}px, ${
+                46 * Math.sin(((d.a - 90) * Math.PI) / 180)
+              }px)`,
+            }}
           >
-            <div style={{ animation: "ring 14s linear infinite reverse" }}>
+            <div style={{ animation: `drift ${3 + (d.a % 3)}s ease-in-out infinite` }}>
             <div style={{ animation: "dancerIn 3.6s ease-out both" }}>
             <svg width="46" height="70" viewBox="0 0 46 70" style={{ marginLeft: -23, marginTop: -35 }}>
               <g style={{ transformOrigin: "23px 60px", animation: "sway 1.4s ease-in-out infinite" }}>
