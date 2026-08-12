@@ -1,40 +1,69 @@
+import { motion } from "framer-motion";
 import { COUPLE, WEDDING_DATE_LABEL } from "../data";
 import { Divider } from "../ui";
 
 export function HomeSection() {
   return (
-    <div className="anim-soft-in flex h-full flex-col items-center justify-center px-8 text-center text-ink">
-      <svg width="76" height="76" viewBox="0 0 100 100" aria-label="Lord Ganesha motif">
-        <g style={{ transformOrigin: "50px 50px", animation: "drift 6s ease-in-out infinite" }}>
-          <circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.35" />
-          <g
-            style={{ transformOrigin: "50px 50px", animation: "spinslow 40s linear infinite" }}
-            opacity="0.4"
-          >
-            {Array.from({ length: 12 }).map((_, i) => (
-              <circle key={i} cx={50 + 44 * Math.cos((i * Math.PI) / 6)} cy={50 + 44 * Math.sin((i * Math.PI) / 6)} r="1.6" fill="currentColor" />
-            ))}
-          </g>
-          <path
-            d="M50 20 c10 0 17 7 17 16 c0 5 -2 8 -5 11 c8 2 13 8 13 15 c0 5 -4 8 -8 8 c-3 0 -5 -2 -6 -5 c-2 8 -10 13 -21 13 c-13 0 -22 -8 -22 -19 c0 -9 6 -15 14 -18 c-3 -3 -5 -6 -5 -11 c0 -9 7 -16 17 -16 z"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.6"
-          />
-          <path d="M50 47 c0 8 -3 14 -3 21 c0 4 3 6 6 5" fill="none" stroke="currentColor" strokeWidth="1.6" />
-          <circle cx="43" cy="40" r="1.8" fill="currentColor" />
-          <circle cx="57" cy="40" r="1.8" fill="currentColor" />
-        </g>
-      </svg>
-      <p className="mt-5 text-[10px] uppercase tracking-[0.5em] text-ink/60">Together with families</p>
-      <h1 className="mt-3 font-display text-5xl leading-[1.05] tracking-wide">
-        {COUPLE.bride}
-        <span className="mx-2 text-3xl italic text-rose">&amp;</span>
-        {COUPLE.groom}
-      </h1>
+    <div className="flex h-full flex-col items-center justify-center -mt-16 px-8 text-center text-ink select-none overflow-hidden">
+      {/* Top Floating Lord Ganesha Artwork Image */}
+      <motion.img
+        initial={{ opacity: 0, y: -30, scale: 0.9 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.65, ease: "easeOut" }}
+        src="/assets/ganesha-art.png"
+        alt="Lord Ganesha"
+        className="w-24 h-24 sm:w-28 sm:h-28 object-contain drop-shadow-md pointer-events-none select-none"
+      />
+
+      {/* Subtitle Left-in */}
+      <motion.p
+        initial={{ opacity: 0, x: -30 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
+        className="mt-2 text-[10px] uppercase tracking-[0.5em] text-ink/60 font-medium"
+      >
+        Together with families
+      </motion.p>
+
+      {/* Couple Names - Staggered Left & Right Appearing */}
+      <div className="mt-1.5 font-display text-5xl leading-[1.05] tracking-wide flex items-center justify-center gap-2">
+        <motion.span
+          initial={{ opacity: 0, x: -40 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.25, ease: "easeOut" }}
+        >
+          {COUPLE.bride}
+        </motion.span>
+
+        <motion.span
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.35, ease: "easeOut" }}
+          className="italic text-rose text-3xl"
+        >
+          &amp;
+        </motion.span>
+
+        <motion.span
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.45, ease: "easeOut" }}
+        >
+          {COUPLE.groom}
+        </motion.span>
+      </div>
+
       <Divider />
-      <p className="font-display text-xl tracking-[0.22em]">{WEDDING_DATE_LABEL}</p>
-      <p className="mt-1 text-[11px] uppercase tracking-[0.32em] text-ink/60">Jaipur, India</p>
+
+      {/* Date Label Bottom-up */}
+      <motion.p
+        initial={{ opacity: 0, y: 25 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.55, ease: "easeOut" }}
+        className="font-display text-xl tracking-[0.22em]"
+      >
+        {WEDDING_DATE_LABEL}
+      </motion.p>
     </div>
   );
 }

@@ -1,17 +1,21 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
+  Battery,
   CalendarHeart,
   Camera,
+  ChevronLeft,
+  ChevronRight,
   Gem,
   HeartHandshake,
   Hourglass,
   MailOpen,
   MapPin,
+  Signal,
   Sparkles,
   Users,
+  Wifi,
 } from "lucide-react";
 import { LivingBackground, type BgKind } from "./LivingBackground";
-import { OpeningAnimation } from "./OpeningAnimation";
 import { HomeSection } from "./sections/HomeSection";
 import { EventsSection } from "./sections/EventsSection";
 import { FamilySection } from "./sections/FamilySection";
@@ -25,56 +29,173 @@ import { ThankYouSection } from "./sections/ThankYouSection";
 const SECTIONS = [
   { id: "home", label: "Home", icon: Gem, bg: "arch", render: HomeSection },
   { id: "events", label: "Events", icon: CalendarHeart, bg: "courtyard", render: EventsSection },
-  { id: "family", label: "Family", icon: Users, bg: "arch", render: FamilySection },
-  { id: "gallery", label: "Gallery", icon: Camera, bg: "courtyard", render: GallerySection },
-  { id: "countdown", label: "Countdown", icon: Hourglass, bg: "arch", render: CountdownSection },
+  { id: "family", label: "Family", icon: Users, bg: "family", render: FamilySection },
+  { id: "gallery", label: "Gallery", icon: Camera, bg: "gallery", render: GallerySection },
+  { id: "countdown", label: "Countdown", icon: Hourglass, bg: "countdown", render: CountdownSection },
   { id: "rsvp", label: "RSVP", icon: MailOpen, bg: "courtyard", render: RsvpSection },
-  { id: "blessings", label: "Blessings", icon: Sparkles, bg: "arch", render: BlessingsSection },
-  { id: "venue", label: "Venue", icon: MapPin, bg: "courtyard", render: VenueSection },
-  { id: "thanks", label: "Thanks", icon: HeartHandshake, bg: "arch", render: ThankYouSection },
+  { id: "blessings", label: "Blessings", icon: Sparkles, bg: "blessings", render: BlessingsSection },
+  { id: "venue", label: "Venue", icon: MapPin, bg: "venue", render: VenueSection },
+  { id: "thanks", label: "Thanks", icon: HeartHandshake, bg: "thankyou", render: ThankYouSection },
 ] as const;
 
 export function WeddingApp() {
-  const [intro, setIntro] = useState(true);
   const [active, setActive] = useState(0);
+  const [isNavHidden, setIsNavHidden] = useState(false);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const touchStartX = useRef<number | null>(null);
+
   const section = SECTIONS[active]!;
   const Body = section.render;
 
+  const handleNext = () => {
+    setActive((prev) => (prev + 1) % SECTIONS.length);
+  };
+
+  const handlePrev = () => {
+    setActive((prev) => (prev - 1 + SECTIONS.length) % SECTIONS.length);
+  };
+
+  // Scroll active tab into view smoothly
+  useEffect(() => {
+    const el = tabRefs.current[active];
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    }
+    setIsNavHidden(false);
+  }, [active]);
+
+  // Touch Swipe navigation
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0]?.clientX ?? null;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const touchEndX = e.changedTouches[0]?.clientX ?? 0;
+    const diff = touchStartX.current - touchEndX;
+    if (diff > 50) {
+      handleNext();
+    } else if (diff < -50) {
+      handlePrev();
+    }
+    touchStartX.current = null;
+  };
+
   return (
-    <div className="grid h-[100svh] w-full place-items-center overflow-hidden bg-[oklch(0.22_0.03_150)]">
-      <div className="relative h-[100svh] w-full max-w-[430px] overflow-hidden bg-background shadow-2xl sm:h-[min(100svh,900px)] sm:rounded-[2.2rem]">
-        <LivingBackground kind={section.bg as BgKind} />
+    <div className="relative grid h-[100svh] w-full place-items-center overflow-hidden bg-[oklch(0.18_0.03_150)] p-0 sm:p-3">
+      {/* Left Side Desktop Royal Character Illustration (20% Blended) */}
+      <img
+        src="/assets/desktop-side-man.png"
+        alt="Royal Groom Greeting"
+        className="hidden lg:block absolute left-4 xl:left-16 top-1/2 -translate-y-1/2 h-[58%] max-h-[400px] w-auto object-contain pointer-events-none drop-shadow-[0_15px_30px_rgba(0,0,0,0.5)] opacity-80 z-10 select-none"
+      />
 
-        <main className="absolute inset-x-0 bottom-24 top-0 overflow-hidden">
-          <div key={section.id} className="h-full">
-            <Body />
+      {/* Right Side Desktop Royal Character Illustration (20% Blended) */}
+      <img
+        src="/assets/desktop-side-woman.png"
+        alt="Royal Bride Greeting"
+        className="hidden lg:block absolute right-4 xl:right-16 top-1/2 -translate-y-1/2 h-[58%] max-h-[400px] w-auto object-contain pointer-events-none drop-shadow-[0_15px_30px_rgba(0,0,0,0.5)] opacity-80 z-10 select-none"
+      />
+
+      {/* Desktop Gold iPhone Frame Outer Bezel (Decreased whole page size by 14%) */}
+      <div className="relative flex h-full w-full max-w-[350px] items-center justify-center sm:h-[min(100svh,712px)] z-20">
+        {/* Hardware Volume Up Button (Desktop Frame) */}
+        <div className="hidden sm:block absolute -left-[10px] top-[140px] h-[48px] w-[5px] rounded-l-md bg-gradient-to-r from-[#d4b46e] to-[#ab873e] shadow-md z-0" />
+        {/* Hardware Volume Down Button (Desktop Frame) */}
+        <div className="hidden sm:block absolute -left-[10px] top-[200px] h-[48px] w-[5px] rounded-l-md bg-gradient-to-r from-[#d4b46e] to-[#ab873e] shadow-md z-0" />
+        {/* Hardware Power Button (Desktop Frame) */}
+        <div className="hidden sm:block absolute -right-[10px] top-[160px] h-[72px] w-[5px] rounded-r-md bg-gradient-to-l from-[#d4b46e] to-[#ab873e] shadow-md z-0" />
+
+        {/* Outer Metallic Bezel Container */}
+        <div className="relative h-full w-full overflow-hidden bg-background shadow-2xl transition-all duration-300 sm:rounded-[3.2rem] sm:p-[10px] sm:bg-gradient-to-b sm:from-[#f3e1b6] sm:via-[#c5a258] sm:to-[#e8ce93] sm:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85)]">
+          {/* Main Mobile Screen Display */}
+          <div
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+            className="relative h-full w-full overflow-hidden bg-background sm:rounded-[2.6rem] border border-black/10 shadow-inner"
+          >
+            {/* Top Desktop iPhone Status Bar Overlay */}
+            <div className="hidden sm:flex absolute top-3 inset-x-6 z-40 justify-between items-center text-[10px] font-bold text-black/75 pointer-events-none tracking-tight">
+              <span>2:57 PM</span>
+              <div className="flex items-center gap-1.5 opacity-80">
+                <Signal className="size-3 text-black" />
+                <Wifi className="size-3 text-black" />
+                <Battery className="size-3.5 text-black fill-black" />
+              </div>
+            </div>
+
+            {/* Dynamic Island Camera Notch (Desktop View) */}
+            <div className="hidden sm:flex absolute top-2.5 left-1/2 -translate-x-1/2 z-50 h-[26px] w-[110px] items-center justify-end rounded-full bg-black px-2 shadow-sm pointer-events-none">
+              <span className="size-2.5 rounded-full bg-[#15151e] border border-white/10" />
+            </div>
+
+            <LivingBackground kind={section.bg as BgKind} />
+
+            <main className="absolute inset-x-0 bottom-20 top-0 overflow-hidden z-20 sm:top-6">
+              <div key={section.id} className="h-full">
+                <Body onModalToggle={setIsNavHidden} />
+              </div>
+            </main>
+
+            {/* Integrated Redesigned Bottom Navigation Bar with Next and Previous Buttons */}
+            <nav
+              className={`glass-panel absolute inset-x-3 bottom-4 z-30 flex items-center justify-between rounded-full px-2.5 py-2 border border-gold/40 shadow-xl backdrop-blur-md transition-all duration-300 ${
+                isNavHidden ? "opacity-0 pointer-events-none translate-y-12" : "opacity-100 translate-y-0"
+              }`}
+            >
+              {/* Previous Button */}
+              <button
+                onClick={handlePrev}
+                aria-label="Previous section"
+                className="flex items-center gap-1 rounded-full bg-white/70 px-3 py-1.5 text-xs font-medium text-amber-950 transition-all hover:bg-white active:scale-95 shadow-xs border border-gold/30"
+              >
+                <ChevronLeft className="size-4 text-amber-800" />
+                <span className="text-[11px] uppercase tracking-wider font-semibold">Prev</span>
+              </button>
+
+              {/* Center Active Section Label & Pagination Dots */}
+              <div className="flex flex-col items-center justify-center gap-1">
+                <div className="flex items-center gap-1.5">
+                  {(() => {
+                    const Icon = section.icon;
+                    return <Icon className="size-4 text-amber-800" />;
+                  })()}
+                  <span className="font-display text-sm font-bold tracking-wider text-amber-950">
+                    {section.label}
+                  </span>
+                </div>
+
+                {/* Pagination Dots */}
+                <div className="flex items-center gap-1">
+                  {SECTIONS.map((s, idx) => (
+                    <button
+                      key={s.id}
+                      onClick={() => setActive(idx)}
+                      aria-label={`Jump to ${s.label}`}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${
+                        idx === active
+                          ? "w-4 bg-amber-800"
+                          : "w-1.5 bg-amber-900/30 hover:bg-amber-900/50"
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Next Button */}
+              <button
+                onClick={handleNext}
+                aria-label="Next section"
+                className="flex items-center gap-1 rounded-full bg-amber-900 px-3.5 py-1.5 text-xs font-medium text-white transition-all hover:bg-amber-800 active:scale-95 shadow-xs"
+              >
+                <span className="text-[11px] uppercase tracking-wider font-semibold">Next</span>
+                <ChevronRight className="size-4 text-white" />
+              </button>
+            </nav>
           </div>
-        </main>
-
-        <nav className="glass-panel absolute inset-x-3 bottom-4 z-30 rounded-full px-2 py-2">
-          <div className="flex snap-x gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {SECTIONS.map((s, i) => {
-              const Icon = s.icon;
-              const on = i === active;
-              return (
-                <button
-                  key={s.id}
-                  onClick={() => setActive(i)}
-                  aria-current={on}
-                  className={`flex shrink-0 snap-center flex-col items-center gap-0.5 rounded-full px-3 py-1.5 transition-colors ${
-                    on ? "bg-ink text-background" : "text-ink/70"
-                  }`}
-                >
-                  <Icon className="size-[18px]" />
-                  <span className="text-[8px] uppercase tracking-[0.14em]">{s.label}</span>
-                </button>
-              );
-            })}
-          </div>
-        </nav>
-
-        {intro && <OpeningAnimation onDone={() => setIntro(false)} />}
+        </div>
       </div>
     </div>
   );
 }
+

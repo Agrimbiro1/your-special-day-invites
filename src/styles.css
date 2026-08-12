@@ -205,6 +205,26 @@ body {
   to { transform: none; opacity: 1; }
 }
 
+@keyframes swingBell {
+  0%, 100% { transform: rotate(-4deg); }
+  50% { transform: rotate(4deg); }
+}
+
+@keyframes shimmerGold {
+  0%, 100% { opacity: 0.2; transform: scale(0.9); }
+  50% { opacity: 0.85; transform: scale(1.15); }
+}
+
+@keyframes gentleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes ambientBreathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.025); }
+}
+
 @utility anim-soft-in {
   animation: softin 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
@@ -215,3 +235,23 @@ body {
   border: 1px solid color-mix(in oklab, var(--color-gold) 45%, transparent);
   box-shadow: 0 18px 40px -22px oklch(0.3 0.05 60 / 0.55);
 }
+
+@keyframes slideUpSheet {
+  from { transform: translateY(100%); opacity: 0.9; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideDownSheet {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(100%); opacity: 0; }
+}
+
+@utility anim-sheet-up {
+  animation: slideUpSheet 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@utility anim-sheet-down {
+  animation: slideDownSheet 0.35s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+}
+
+
