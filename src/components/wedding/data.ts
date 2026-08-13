@@ -3,10 +3,10 @@ export const WEDDING_DATE = "2026-12-06T19:00:00+05:30";
 export const WEDDING_DATE_LABEL = "6th December 2026";
 
 export const EVENTS = [
-  { name: "Haldi", date: "3rd Dec 2026", time: "10:00 AM", venue: "Family Residence, Jaipur", note: "Wear yellow & bring your smile." },
-  { name: "Mehendi", date: "4th Dec 2026", time: "4:00 PM", venue: "The Courtyard Lawns", note: "Henna, chai and music all evening." },
-  { name: "Sangeet", date: "5th Dec 2026", time: "7:30 PM", venue: "Rajmahal Ballroom", note: "Dancing shoes strongly advised." },
-  { name: "Wedding", date: "6th Dec 2026", time: "7:00 PM", venue: "Amrit Bagh Palace", note: "Phere at midnight, dinner follows." },
+  { name: "Haldi", date: "3rd Dec 2026", time: "10:00 AM", venue: "Family Residence, Jaipur", dressCode: "Yellow Traditional", note: "Wear yellow & bring your smile." },
+  { name: "Mehendi", date: "4th Dec 2026", time: "4:00 PM", venue: "The Courtyard Lawns", dressCode: "Green & Floral Attire", note: "Henna, chai and music all evening." },
+  { name: "Sangeet", date: "5th Dec 2026", time: "7:30 PM", venue: "Rajmahal Ballroom", dressCode: "Glamorous Indo-Western", note: "Dancing shoes strongly advised." },
+  { name: "Wedding", date: "6th Dec 2026", time: "7:00 PM", venue: "Amrit Bagh Palace", dressCode: "Royal Ethnic & Traditional", note: "Phere at midnight, dinner follows." },
 ];
 
 export interface FamilyMember {
@@ -17,6 +17,7 @@ export interface FamilyMember {
   initials: string;
   gradient: string;
   thought: string;
+  image?: string;
 }
 
 export const FAMILY: Record<"bride" | "groom", FamilyMember[]> = {
@@ -29,6 +30,7 @@ export const FAMILY: Record<"bride" | "groom", FamilyMember[]> = {
       initials: "VS",
       gradient: "from-amber-600 to-amber-800",
       thought: "Watching our daughter step into this beautiful new chapter fills our hearts with endless love and pride.",
+      image: "/assets/family/father_bride.jpg",
     },
     {
       id: "b-mother",
@@ -38,6 +40,7 @@ export const FAMILY: Record<"bride" | "groom", FamilyMember[]> = {
       initials: "MS",
       gradient: "from-rose-500 to-amber-700",
       thought: "May your home always echo with laughter, harmony, and a warm morning cup of chai together.",
+      image: "/assets/family/mother_bride.jpg",
     },
     {
       id: "b-gfather",
@@ -47,6 +50,7 @@ export const FAMILY: Record<"bride" | "groom", FamilyMember[]> = {
       initials: "OS",
       gradient: "from-yellow-600 to-amber-900",
       thought: "A grandfather's blessing is forever. Stay happy, blessed, and always united in every step.",
+      image: "/assets/family/gfather.jpg",
     },
     {
       id: "b-gmother",
@@ -56,6 +60,7 @@ export const FAMILY: Record<"bride" | "groom", FamilyMember[]> = {
       initials: "KS",
       gradient: "from-emerald-600 to-teal-800",
       thought: "May Lord Ganesha shower eternal happiness, health, and peace upon both of you.",
+      image: "/assets/family/gmother.jpg",
     },
     {
       id: "b-brother",
@@ -65,6 +70,7 @@ export const FAMILY: Record<"bride" | "groom", FamilyMember[]> = {
       initials: "AS",
       gradient: "from-cyan-600 to-blue-800",
       thought: "Protecting my sister was my job—now Rohan takes the torch! So thrilled for you two!",
+      image: "/assets/family/brother.jpg",
     },
     {
       id: "b-sister",
@@ -74,6 +80,7 @@ export const FAMILY: Record<"bride" | "groom", FamilyMember[]> = {
       initials: "IS",
       gradient: "from-pink-500 to-rose-700",
       thought: "Best sister and brother-in-law ever! Welcome to our crazy, joyful family, Rohan!",
+      image: "/assets/family/sister.jpg",
     },
   ],
   groom: [
@@ -85,6 +92,7 @@ export const FAMILY: Record<"bride" | "groom", FamilyMember[]> = {
       initials: "RM",
       gradient: "from-indigo-600 to-blue-900",
       thought: "A son finds his soulmate, and our family gains a cherished daughter. Welcome home, Aanya!",
+      image: "/assets/family/father_bride.jpg",
     },
     {
       id: "g-mother",
@@ -94,6 +102,7 @@ export const FAMILY: Record<"bride" | "groom", FamilyMember[]> = {
       initials: "AM",
       gradient: "from-amber-500 to-rose-700",
       thought: "Seeing Rohan so happy with Aanya is our greatest blessing. God bless your sacred journey.",
+      image: "/assets/family/mother_bride.jpg",
     },
     {
       id: "g-gfather",
@@ -103,6 +112,7 @@ export const FAMILY: Record<"bride" | "groom", FamilyMember[]> = {
       initials: "SM",
       gradient: "from-amber-700 to-stone-800",
       thought: "Rooted in tradition and growing in love—wishing you a lifetime of joy and togetherness.",
+      image: "/assets/family/gfather.jpg",
     },
     {
       id: "g-gmother",
@@ -112,6 +122,7 @@ export const FAMILY: Record<"bride" | "groom", FamilyMember[]> = {
       initials: "LM",
       gradient: "from-orange-500 to-amber-700",
       thought: "May your bond be as everlasting as gold and as sweet as wedding mithai.",
+      image: "/assets/family/gmother.jpg",
     },
     {
       id: "g-sister",
@@ -121,6 +132,7 @@ export const FAMILY: Record<"bride" | "groom", FamilyMember[]> = {
       initials: "NM",
       gradient: "from-purple-500 to-indigo-700",
       thought: "Finally got a sister! Can't wait for all the shopping trips and late-night chats, Aanya!",
+      image: "/assets/family/sister.jpg",
     },
     {
       id: "g-cousin",
@@ -130,6 +142,7 @@ export const FAMILY: Record<"bride" | "groom", FamilyMember[]> = {
       initials: "KM",
       gradient: "from-amber-600 to-orange-800",
       thought: "Cheers to the ultimate power couple! Time to turn up the music and dance at the Sangeet!",
+      image: "/assets/family/brother.jpg",
     },
   ],
 };

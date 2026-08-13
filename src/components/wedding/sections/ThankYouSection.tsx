@@ -21,7 +21,7 @@ const itemVariants = {
     y: 0,
     scale: 1,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 120,
       damping: 16,
     },
@@ -38,12 +38,10 @@ export function ThankYouSection() {
         className="flex w-full max-w-xs flex-col items-center justify-center"
       >
         {/* Animated Gratitude Badge */}
-        <motion.div variants={itemVariants} className="inline-flex items-center gap-1.5 px-3 py-0.5">
-          <Sparkles className="size-3 text-amber-600 animate-pulse" />
+        <motion.div variants={itemVariants} className="inline-flex items-center justify-center px-3 py-0.5">
           <span className="text-[9px] font-semibold uppercase tracking-[0.35em] text-ink/70">
             With Endless Gratitude
           </span>
-          <Sparkles className="size-3 text-amber-600 animate-pulse" />
         </motion.div>
 
         {/* Main Animated Title */}

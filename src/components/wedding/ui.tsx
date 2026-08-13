@@ -40,7 +40,7 @@ export function Divider({ className }: { className?: string }) {
       className={cn("mx-auto my-1.5 flex items-center gap-2 text-gold", className)}
     >
       <span className="h-px w-10 bg-gold/60" />
-      <span className="text-[10px]">✦</span>
+      <span className="size-1 rounded-full bg-gold/80" />
       <span className="h-px w-10 bg-gold/60" />
     </motion.div>
   );

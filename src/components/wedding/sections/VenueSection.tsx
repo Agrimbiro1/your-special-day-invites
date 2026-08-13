@@ -30,11 +30,9 @@ export function VenueSection() {
         initial={{ opacity: 0, y: -15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45, delay: 0.1, ease: "easeOut" }}
-        className="mt-1.5 px-3.5 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-amber-900 bg-amber-500/15 backdrop-blur-md rounded-full border border-gold/40 shadow-2xs flex items-center gap-1.5"
+        className="mt-1.5 px-3.5 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-amber-900 bg-amber-500/15 backdrop-blur-md rounded-full border border-gold/40 shadow-2xs flex items-center justify-center"
       >
-        <Sparkles className="size-3 text-amber-700" />
         <span>Sacred Royal Location</span>
-        <Sparkles className="size-3 text-amber-700" />
       </motion.div>
 
       {/* Top Venue Name & Address (Without any card box layout) - Staggered Left & Right */}

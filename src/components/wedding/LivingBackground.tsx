@@ -1,13 +1,35 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
-export type BgKind = "arch" | "courtyard" | "family" | "gallery" | "countdown" | "blessings" | "venue" | "thankyou";
+export type BgKind =
+  | "opening"
+  | "arch"
+  | "courtyard"
+  | "family"
+  | "gallery"
+  | "countdown"
+  | "blessings"
+  | "venue"
+  | "thankyou"
+  | "haldi"
+  | "mehendi"
+  | "sangeet"
+  | "wedding"
+  | "rsvp";
 
-const PETALS = Array.from({ length: 16 }, (_, i) => ({
-  left: `${(i * 6.2 + 3) % 94}%`,
-  delay: `${(i * 1.3) % 10}s`,
-  duration: `${9 + (i % 5) * 2.2}s`,
-  size: 7 + (i % 4) * 3,
+const PETALS = Array.from({ length: 8 }, (_, i) => ({
+  left: `${(i * 12 + 5) % 90}%`,
+  delay: `${(i * 1.5) % 8}s`,
+  duration: `${8 + (i % 4) * 2}s`,
+  size: 7 + (i % 3) * 3,
   hue: i % 3 === 0 ? "oklch(0.75 0.18 25)" : i % 3 === 1 ? "oklch(0.85 0.16 75)" : "oklch(0.88 0.08 350)",
+}));
+
+const OPENING_PETALS = Array.from({ length: 12 }, (_, i) => ({
+  left: `${(i * 8 + 4) % 92}%`,
+  delay: `${(i * 0.8) % 6}s`,
+  duration: `${6 + (i % 4) * 1.5}s`,
+  size: 8 + (i % 4) * 3,
+  hue: i % 4 === 0 ? "oklch(0.68 0.22 25)" : i % 4 === 1 ? "oklch(0.82 0.2 80)" : i % 4 === 2 ? "oklch(0.72 0.22 45)" : "oklch(0.88 0.12 85)",
 }));
 
 const DIYA_SPARKLES = Array.from({ length: 10 }, (_, i) => ({
@@ -78,8 +100,8 @@ function FoliageOverlay({ kind }: { kind: BgKind }) {
         </g>
       )}
 
-      {/* Hanging Temple Bells overlay for Courtyard, Family, Gallery, Countdown, Blessings, and Venue artwork */}
-      {(kind === "courtyard" || kind === "family" || kind === "gallery" || kind === "countdown" || kind === "blessings" || kind === "venue") && (
+      {/* Hanging Temple Bells overlay for Courtyard, Family, Gallery, Countdown, Blessings, Venue, RSVP, and Events artwork */}
+      {(kind === "courtyard" || kind === "family" || kind === "gallery" || kind === "countdown" || kind === "blessings" || kind === "venue" || kind === "haldi" || kind === "mehendi" || kind === "sangeet" || kind === "wedding" || kind === "rsvp") && (
         <g>
           {/* Left Bell cluster */}
           <g style={{ transformOrigin: "36px 10px", animation: "swingBell 5s ease-in-out infinite" }}>
@@ -134,7 +156,19 @@ function FlyingBird({ delay, top, dur }: { delay: string; top: string; dur: stri
 
 export function LivingBackground({ kind = "arch" }: { kind?: BgKind }) {
   const imgSrc =
-    kind === "arch"
+    kind === "opening"
+      ? "/assets/open%20animation.jpg"
+      : kind === "rsvp"
+      ? "/assets/rsvp%20background.jpg"
+      : kind === "haldi"
+      ? "/assets/haldi.jpg"
+      : kind === "mehendi"
+      ? "/assets/mehendi.jpg"
+      : kind === "sangeet"
+      ? "/assets/sangeet.png"
+      : kind === "wedding"
+      ? "/assets/wedding.jpg"
+      : kind === "arch"
       ? "/assets/bg-arch-custom.jpg"
       : kind === "courtyard"
       ? "/assets/bg-courtyard-custom.jpg"
@@ -151,22 +185,25 @@ export function LivingBackground({ kind = "arch" }: { kind?: BgKind }) {
       : "/assets/bg-thankyou-custom.jpg";
 
   return (
-    <div className="absolute inset-0 overflow-hidden bg-[oklch(0.96_0.02_90)]">
-      {/* Base Background Image with Framer Motion ambient breathing & entry animation */}
-      <motion.div
-        key={imgSrc}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
-        className="absolute inset-0 h-full w-full"
-      >
-        <img
-          src={imgSrc}
-          alt="Illustrated Indian wedding background"
-          className="h-full w-full object-cover object-center"
-          style={{ animation: "ambientBreathe 16s ease-in-out infinite" }}
-        />
-      </motion.div>
+    <div className="absolute inset-0 overflow-hidden bg-[oklch(0.18_0.03_150)] z-1">
+      {/* Base Background Image with Framer Motion smooth crossfade dissolve without blinking */}
+      <AnimatePresence mode="sync">
+        <motion.div
+          key={imgSrc}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
+          className="absolute inset-0 h-full w-full"
+        >
+          <img
+            src={imgSrc}
+            alt="Illustrated Indian wedding background"
+            className="h-full w-full object-cover object-center translate-z-0"
+            style={{ transform: "translateZ(0)", willChange: "opacity" }}
+          />
+        </motion.div>
+      </AnimatePresence>
 
       {/* Animated Foliage, Garlands, and Temple Bells Overlay */}
       <FoliageOverlay kind={kind} />
@@ -207,7 +244,7 @@ export function LivingBackground({ kind = "arch" }: { kind?: BgKind }) {
       )}
 
       {/* Falling Flower Petals */}
-      {PETALS.map((p, i) => (
+      {(kind === "opening" ? OPENING_PETALS : PETALS).map((p, i) => (
         <span
           key={i}
           className="pointer-events-none absolute top-0 z-10 rounded-full blur-[0.3px]"

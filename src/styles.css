@@ -63,7 +63,7 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
+  --background: oklch(0.18 0.03 150);
   --foreground: oklch(0.129 0.042 264.695);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.129 0.042 264.695);
@@ -178,31 +178,31 @@ body {
   50% { transform: scaleY(0.35); }
 }
 @keyframes flyacross {
-  0% { transform: translate(-15vw, 12vh) scale(0.7); opacity: 0; }
+  0% { transform: translate3d(-15vw, 12vh, 0) scale(0.7); opacity: 0; }
   10% { opacity: 1; }
   90% { opacity: 1; }
-  100% { transform: translate(115vw, -6vh) scale(1); opacity: 0; }
+  100% { transform: translate3d(115vw, -6vh, 0) scale(1); opacity: 0; }
 }
 @keyframes petalfall {
-  0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+  0% { transform: translate3d(0, -10vh, 0) rotate(0deg); opacity: 0; }
   10% { opacity: 0.85; }
-  100% { transform: translateY(105vh) rotate(320deg); opacity: 0; }
+  100% { transform: translate3d(0, 105vh, 0) rotate(320deg); opacity: 0; }
 }
 @keyframes twinkle {
   0%, 100% { opacity: 0.15; }
   50% { opacity: 0.7; }
 }
 @keyframes softin {
-  from { opacity: 0; transform: translateY(14px) scale(0.985); }
-  to { opacity: 1; transform: none; }
+  from { opacity: 0; transform: translate3d(0, 14px, 0) scale(0.985); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
 }
 @keyframes spinslow {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 @keyframes flipdown {
-  from { transform: translateY(-55%) scale(0.9); opacity: 0; }
-  to { transform: none; opacity: 1; }
+  from { transform: translate3d(0, -55%, 0) scale(0.9); opacity: 0; }
+  to { transform: translate3d(0, 0, 0); opacity: 1; }
 }
 
 @keyframes swingBell {
@@ -216,42 +216,40 @@ body {
 }
 
 @keyframes gentleFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-
-@keyframes ambientBreathe {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.025); }
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -6px, 0); }
 }
 
 @utility anim-soft-in {
-  animation: softin 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: softin 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @utility glass-panel {
-  background: color-mix(in oklab, white 62%, transparent);
-  backdrop-filter: blur(14px) saturate(1.2);
+  background: color-mix(in oklab, white 85%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid color-mix(in oklab, var(--color-gold) 45%, transparent);
-  box-shadow: 0 18px 40px -22px oklch(0.3 0.05 60 / 0.55);
+  box-shadow: 0 10px 30px -15px oklch(0.3 0.05 60 / 0.4);
+  transform: translateZ(0);
+  will-change: transform, opacity;
 }
 
 @keyframes slideUpSheet {
-  from { transform: translateY(100%); opacity: 0.9; }
-  to { transform: translateY(0); opacity: 1; }
+  from { transform: translate3d(0, 100%, 0); opacity: 0.9; }
+  to { transform: translate3d(0, 0, 0); opacity: 1; }
 }
 
 @keyframes slideDownSheet {
-  from { transform: translateY(0); opacity: 1; }
-  to { transform: translateY(100%); opacity: 0; }
+  from { transform: translate3d(0, 0, 0); opacity: 1; }
+  to { transform: translate3d(0, 100%, 0); opacity: 0; }
 }
 
 @utility anim-sheet-up {
-  animation: slideUpSheet 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slideUpSheet 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @utility anim-sheet-down {
-  animation: slideDownSheet 0.35s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+  animation: slideDownSheet 0.3s cubic-bezier(0.7, 0, 0.84, 0) forwards;
 }
 
 
