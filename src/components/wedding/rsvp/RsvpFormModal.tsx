@@ -87,7 +87,7 @@ export function RsvpFormModal({
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: "100%", opacity: 0 }}
             transition={{ type: "spring", damping: 28, stiffness: 280 }}
-            className="relative z-10 w-full max-w-md h-[58vh] max-h-[480px] rounded-t-[2.5rem] p-5 glass-panel bg-white/95 backdrop-blur-2xl border-t-2 border-x border-gold/50 shadow-[0_-20px_60px_rgba(0,0,0,0.4)] flex flex-col justify-between text-center overflow-hidden select-none"
+            className="relative z-10 w-full max-w-md h-[68vh] max-h-[550px] rounded-t-[2.5rem] p-5 glass-panel bg-white/95 backdrop-blur-2xl border-t-2 border-x border-gold/50 shadow-[0_-20px_60px_rgba(0,0,0,0.4)] flex flex-col justify-between text-center overflow-hidden select-none"
           >
             {/* Modal Header */}
             <div className="flex items-center justify-between border-b border-gold/30 pb-3 pt-1">
@@ -108,13 +108,13 @@ export function RsvpFormModal({
 
             {/* Guest Badge & Form Body */}
             <form onSubmit={handleSubmit} className="flex-1 flex flex-col justify-between overflow-hidden mt-2">
-              <div className="overflow-y-auto scrollbar-none space-y-3.5 pr-1 py-1">
+              <div className="overflow-y-auto scrollbar-none space-y-3.5 px-0.5 py-1 w-full box-border">
                 {/* Guest Badge */}
-                <div className="text-left">
+                <div className="text-left w-full box-border">
                   <label className="text-[10px] sm:text-[11px] uppercase tracking-widest text-amber-900 font-bold mb-1 block">
                     Responding As
                   </label>
-                  <div className="w-full rounded-2xl border border-gold/40 bg-amber-500/15 px-4 py-2 flex items-center justify-between shadow-2xs">
+                  <div className="w-full box-border rounded-2xl border border-gold/40 bg-amber-500/15 px-4 py-2.5 min-h-[42px] flex items-center justify-between shadow-2xs">
                     <span className="font-display text-sm font-bold text-amber-950">Dear {guestName}</span>
                     <span className="text-[9px] uppercase tracking-wider text-amber-900 font-bold bg-amber-500/20 px-2.5 py-0.5 rounded-full border border-gold/30">
                       Guest

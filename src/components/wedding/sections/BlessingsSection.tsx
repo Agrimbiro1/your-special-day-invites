@@ -378,7 +378,7 @@ export function BlessingsSection({
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: "100%", opacity: 0 }}
               transition={{ type: "spring", damping: 28, stiffness: 280 }}
-              className="relative z-10 w-full max-w-md h-[74vh] max-h-[600px] rounded-t-[2.5rem] p-5 glass-panel bg-white/95 backdrop-blur-2xl border-t-2 border-x border-gold/50 shadow-[0_-20px_60px_rgba(0,0,0,0.4)] flex flex-col justify-between text-center overflow-hidden"
+              className="relative z-10 w-full max-w-md h-[80vh] max-h-[650px] rounded-t-[2.5rem] p-5 glass-panel bg-white/95 backdrop-blur-2xl border-t-2 border-x border-gold/50 shadow-[0_-20px_60px_rgba(0,0,0,0.4)] flex flex-col justify-between text-center overflow-hidden"
             >
               {/* Header */}
               <div className="flex items-center justify-between border-b border-gold/30 pb-3 pt-1">

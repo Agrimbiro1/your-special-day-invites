@@ -185,14 +185,10 @@ export function FamilySection({ onModalToggle }: { onModalToggle?: (isOpen: bool
               {/* Inner Fine Gold Border Frame Accent */}
               <div className="absolute inset-2.5 rounded-t-[2.2rem] border border-amber-500/30 pointer-events-none" />
 
-              {/* Enhanced Royal Arch & Mandala Motif Background SVG Overlay */}
-              <svg className="absolute inset-0 size-full opacity-25 pointer-events-none" viewBox="0 0 200 240" fill="none">
+              {/* Enhanced Royal Arch Background SVG Overlay */}
+              <svg className="absolute inset-0 size-full opacity-20 pointer-events-none" viewBox="0 0 200 240" fill="none">
                 <path d="M 15 50 C 15 8, 185 8, 185 50 L 185 235 L 15 235 Z" stroke="url(#modalArchGoldGrad)" strokeWidth="1.6" />
                 <path d="M 24 58 C 24 18, 176 18, 176 58 L 176 226 L 24 226 Z" stroke="url(#modalArchGoldGrad)" strokeWidth="1" strokeDasharray="3 3" />
-                {/* Center Royal Mandala Ring & Star Motif */}
-                <circle cx="100" cy="115" r="42" stroke="url(#modalArchGoldGrad)" strokeWidth="1.2" opacity="0.7" />
-                <circle cx="100" cy="115" r="28" stroke="url(#modalArchGoldGrad)" strokeWidth="0.8" strokeDasharray="2 2" />
-                <polygon points="100,78 107,107 137,115 107,123 100,152 93,123 63,115 93,107" fill="url(#modalArchGoldGrad)" opacity="0.18" />
                 <defs>
                   <linearGradient id="modalArchGoldGrad" x1="0" y1="0" x2="200" y2="240" gradientUnits="userSpaceOnUse">
                     <stop stopColor="#b45309" />
@@ -232,12 +228,8 @@ export function FamilySection({ onModalToggle }: { onModalToggle?: (isOpen: bool
                   transition={{ duration: 0.22, ease: "easeOut" }}
                   className="my-auto w-full flex flex-col items-center justify-center relative z-20 py-2"
                 >
-                  {/* ENHANCED LARGE PICTURE (size-36 to size-40) with Glowing Gold Double Border */}
-                  <div className="relative mt-2 mb-0">
-                    {/* Outer Pulsing Golden Halo Glow */}
-                    <div className="absolute -inset-3 rounded-full bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 opacity-70 blur-md animate-pulse" />
-                    
-                    {/* Gold Metallic Bevel Container */}
+                  {/* ENHANCED LARGE PICTURE (size-36 to size-40) with Gold Metallic Bevel Container */}
+                  <div className="relative mt-2 mb-2.5">
                     <div className="relative p-1 rounded-full bg-gradient-to-br from-amber-200 via-yellow-400 to-amber-600 shadow-[0_12px_28px_rgba(180,83,9,0.45)] border-2 border-amber-300/80">
                       {member.image ? (
                         <img
@@ -268,7 +260,7 @@ export function FamilySection({ onModalToggle }: { onModalToggle?: (isOpen: bool
               </AnimatePresence>
 
               {/* In-Modal Navigation Control Bar */}
-              <div className="w-full flex items-center justify-between gap-3 pt-2 pb-1 relative z-20">
+              <div className="w-full flex items-center justify-between gap-3 pt-2 pb-3 mb-1 relative z-20">
                 <button
                   onClick={() => goModal(-1)}
                   aria-label="Previous member"

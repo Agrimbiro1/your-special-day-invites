@@ -12,7 +12,7 @@ export function RsvpFormField({ field, value, onChange, error }: RsvpFormFieldPr
   const { id, type, label, placeholder, required, options, hint } = field;
 
   const baseInputClasses =
-    "w-full rounded-2xl border border-gold/40 bg-white/80 px-4 py-2.5 text-xs sm:text-sm text-ink outline-none focus:border-gold focus:ring-1 focus:ring-gold/30 placeholder:text-ink/40 shadow-2xs transition-all";
+    "w-full box-border rounded-2xl border border-gold/40 bg-white/80 px-4 py-2.5 min-h-[42px] text-xs sm:text-sm text-ink outline-none focus:border-gold focus:ring-1 focus:ring-gold/30 placeholder:text-ink/40 shadow-2xs transition-all font-medium";
 
   const renderInput = () => {
     switch (type) {
@@ -39,7 +39,7 @@ export function RsvpFormField({ field, value, onChange, error }: RsvpFormFieldPr
             value={value ?? ""}
             onChange={(e) => onChange(e.target.value)}
             required={required}
-            className={baseInputClasses}
+            className={`${baseInputClasses} max-w-[180px] sm:max-w-[200px]`}
           />
         );
 
