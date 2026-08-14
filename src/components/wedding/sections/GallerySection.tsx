@@ -137,7 +137,7 @@ export function GallerySection({ onModalToggle }: { onModalToggle?: (isOpen: boo
   const ModalIcon = activeModalPhoto.icon;
 
   return (
-    <div className="flex h-full flex-col items-center justify-center -mt-6 pb-4 px-2 w-full max-w-sm mx-auto select-none overflow-hidden">
+    <div className="flex h-full flex-col items-center justify-center -mt-10 sm:-mt-12 pb-4 px-2 w-full max-w-sm mx-auto select-none overflow-hidden">
       <SectionTitle>Our Moments</SectionTitle>
 
       {/* 3D Coverflow Carousel Viewport */}
@@ -350,7 +350,7 @@ export function GallerySection({ onModalToggle }: { onModalToggle?: (isOpen: boo
       {/* Bottom-to-Top Fullscreen Photo Preview Popup Modal */}
       <AnimatePresence>
         {isModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-end justify-center overflow-hidden">
+          <div className="absolute inset-0 z-50 flex items-end justify-center overflow-hidden">
             {/* Backdrop Overlay Click to Close */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -368,7 +368,7 @@ export function GallerySection({ onModalToggle }: { onModalToggle?: (isOpen: boo
               transition={{ type: "spring", damping: 28, stiffness: 280 }}
               onTouchStart={handleModalTouchStart}
               onTouchEnd={handleModalTouchEnd}
-              className="relative z-10 w-full max-w-md h-[65vh] rounded-t-[2.5rem] p-5 glass-panel bg-gradient-to-b from-[#FFFDF7]/98 via-[#F9F3E5]/98 to-[#F2E7D3]/98 backdrop-blur-2xl border-t-2 border-x border-gold/60 shadow-[0_-25px_60px_rgba(0,0,0,0.45)] flex flex-col justify-between items-center text-center overflow-hidden"
+              className="relative z-10 w-full max-w-md h-[70vh] max-h-[580px] rounded-t-[2.5rem] p-5 glass-panel bg-gradient-to-b from-[#FFFDF7]/98 via-[#F9F3E5]/98 to-[#F2E7D3]/98 backdrop-blur-2xl border-t-2 border-x border-gold/60 shadow-[0_-25px_60px_rgba(0,0,0,0.45)] flex flex-col justify-between items-center text-center overflow-hidden"
             >
               {/* Top Gold Trim Accent Line */}
               <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-amber-300 via-yellow-500 to-amber-300 opacity-90 rounded-t-[2.5rem]" />

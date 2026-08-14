@@ -7,6 +7,7 @@ export const EVENTS = [
   { name: "Mehendi", date: "4th Dec 2026", time: "4:00 PM", venue: "The Courtyard Lawns", dressCode: "Green & Floral Attire", note: "Henna, chai and music all evening." },
   { name: "Sangeet", date: "5th Dec 2026", time: "7:30 PM", venue: "Rajmahal Ballroom", dressCode: "Glamorous Indo-Western", note: "Dancing shoes strongly advised." },
   { name: "Wedding", date: "6th Dec 2026", time: "7:00 PM", venue: "Amrit Bagh Palace", dressCode: "Royal Ethnic & Traditional", note: "Phere at midnight, dinner follows." },
+  { name: "Universal Card", date: "7th Dec 2026", time: "8:00 PM", venue: "Grand Ballroom, Jaipur", dressCode: "Royal Formal Attire", note: "Celebration continues with love & joy." },
 ];
 
 export interface FamilyMember {

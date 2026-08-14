@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Navigation, Phone, Sparkles } from "lucide-react";
+import { Navigation, Phone } from "lucide-react";
 import { VENUE } from "../data";
 import { Divider, SectionTitle } from "../ui";
 
@@ -25,7 +25,7 @@ export function VenueSection() {
     <div className="flex h-full flex-col items-center justify-center -mt-2 pb-4 px-3 w-full max-w-sm mx-auto select-none text-center overflow-hidden">
       <SectionTitle>The Venue</SectionTitle>
 
-      {/* Subtitle Emblem Badge - Top-down */}
+      {/* Subtitle Emblem Badge */}
       <motion.div
         initial={{ opacity: 0, y: -15 }}
         animate={{ opacity: 1, y: 0 }}
@@ -35,7 +35,7 @@ export function VenueSection() {
         <span>Sacred Royal Location</span>
       </motion.div>
 
-      {/* Top Venue Name & Address (Without any card box layout) - Staggered Left & Right */}
+      {/* Top Venue Name & Address */}
       <div className="mt-3.5 flex flex-col items-center justify-center">
         <motion.h3
           initial={{ opacity: 0, x: -35 }}
@@ -56,27 +56,37 @@ export function VenueSection() {
         </motion.p>
       </div>
 
-      {/* Middle Section: Get Directions Metallic Gold Button - Bottom-up */}
+      {/* Middle Section: Get Directions Premium RSVP-Style Metallic Gold Button */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
         className="mt-4 w-full flex justify-center"
       >
-        <a
+        <motion.a
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.96 }}
           href={mapsUrl}
           target="_blank"
           rel="noreferrer"
-          className="relative flex items-center justify-center py-3 px-6 w-full max-w-[220px] rounded-full bg-gradient-to-r from-amber-900 via-amber-800 to-amber-900 border border-gold/50 text-white font-bold uppercase tracking-[0.2em] text-xs shadow-xl hover:shadow-gold hover:from-amber-800 hover:to-amber-800 active:scale-95 transition-all gap-2 group"
+          className="group relative flex items-center justify-center gap-2 px-7 py-3 rounded-full w-full max-w-[230px] mx-auto overflow-hidden shadow-lg transition-all duration-300 border border-amber-400/60 bg-gradient-to-r from-amber-950 via-amber-900 to-amber-950 text-amber-100 cursor-pointer"
         >
-          <Navigation className="size-3.5 text-amber-300 group-hover:rotate-45 transition-transform" />
-          <span>Get Directions</span>
-        </a>
+          {/* Outer Golden Glow & Shimmer */}
+          <div className="absolute inset-0 bg-gradient-to-r from-amber-400/20 via-yellow-200/30 to-amber-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+          {/* Gold Ring Inset Border */}
+          <div className="absolute inset-0.5 rounded-full border border-amber-300/40 pointer-events-none" />
+
+          <Navigation className="relative z-10 size-3.5 text-amber-300 group-hover:rotate-45 transition-transform" />
+          <span className="relative z-10 font-display text-xs font-bold uppercase tracking-[0.22em] text-amber-100 drop-shadow-xs">
+            Get Directions
+          </span>
+        </motion.a>
       </motion.div>
 
       <Divider />
 
-      {/* Bottom Section: 2 Family Contact Cards (Father of Bride Left-in, Father of Groom Right-in) */}
+      {/* Bottom Section: 2 Family Contact Cards */}
       <div className="mt-2 w-full flex flex-col items-center">
         <motion.span
           initial={{ opacity: 0, y: 15 }}
@@ -87,7 +97,7 @@ export function VenueSection() {
           Family Assistance & Contacts
         </motion.span>
 
-        <div className="grid grid-cols-2 gap-2.5 w-full max-w-[310px]">
+        <div className="grid grid-cols-2 gap-2.5 w-full max-w-[320px]">
           {FAMILY_CONTACTS.map((c, idx) => (
             <motion.div
               key={c.relation}
@@ -114,14 +124,24 @@ export function VenueSection() {
                 </p>
               </div>
 
-              {/* Call Now Button */}
-              <a
+              {/* Call Now Button - Styled same as Accept Invitation button */}
+              <motion.a
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 href={`tel:${c.tel}`}
-                className="mt-1 py-1.5 px-2.5 rounded-xl bg-amber-900 text-white font-bold uppercase tracking-wider text-[9px] shadow-sm hover:bg-amber-800 active:scale-95 transition-all flex items-center justify-center gap-1"
+                className="group relative flex items-center justify-center gap-1.5 py-2 px-3 rounded-full w-full mx-auto overflow-hidden shadow-md transition-all duration-300 border border-amber-400/60 bg-gradient-to-r from-amber-950 via-amber-900 to-amber-950 text-amber-100 cursor-pointer"
               >
-                <Phone className="size-2.5 text-amber-300" />
-                <span>Call Now</span>
-              </a>
+                {/* Outer Golden Glow & Shimmer */}
+                <div className="absolute inset-0 bg-gradient-to-r from-amber-400/20 via-yellow-200/30 to-amber-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+                {/* Gold Ring Inset Border */}
+                <div className="absolute inset-0.5 rounded-full border border-amber-300/40 pointer-events-none" />
+
+                <Phone className="relative z-10 size-3 text-amber-300" />
+                <span className="relative z-10 font-display text-[9.5px] font-bold uppercase tracking-[0.18em] text-amber-100 drop-shadow-xs">
+                  Call Now
+                </span>
+              </motion.a>
             </motion.div>
           ))}
         </div>

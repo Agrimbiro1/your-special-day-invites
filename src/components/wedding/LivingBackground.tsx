@@ -14,6 +14,8 @@ export type BgKind =
   | "mehendi"
   | "sangeet"
   | "wedding"
+  | "universal"
+  | "universal card"
   | "rsvp";
 
 const PETALS = Array.from({ length: 8 }, (_, i) => ({
@@ -56,23 +58,6 @@ function FoliageOverlay({ kind }: { kind: BgKind }) {
       preserveAspectRatio="xMidYMid slice"
       aria-hidden="true"
     >
-      {/* left foliage cluster – swaying */}
-      <g
-        style={{ transformOrigin: "15px 700px", animation: "sway 7s ease-in-out infinite" }}
-        opacity="0.45"
-      >
-        <path d="M2 720 q30 -40 18 -86 q26 40 14 92z" fill="oklch(0.42 0.09 148)" />
-        <path d="M-6 760 q44 -30 44 -78 q16 52 -22 92z" fill="oklch(0.36 0.08 150)" />
-      </g>
-      {/* right foliage cluster */}
-      <g
-        style={{ transformOrigin: "375px 690px", animation: "sway 9s ease-in-out infinite reverse" }}
-        opacity="0.45"
-      >
-        <path d="M388 706 q-32 -38 -20 -84 q-26 40 -12 90z" fill="oklch(0.42 0.09 148)" />
-        <path d="M396 748 q-46 -28 -46 -76 q-14 52 24 90z" fill="oklch(0.36 0.08 150)" />
-      </g>
-
       {/* Hanging Garlands overlay for Arch artwork */}
       {kind === "arch" && (
         <g opacity="0.65">
@@ -100,6 +85,38 @@ function FoliageOverlay({ kind }: { kind: BgKind }) {
         </g>
       )}
 
+      {/* Enhanced Royal Toran Arch & Hanging Garlands for Family artwork */}
+      {kind === "family" && (
+        <g opacity="0.95">
+          {/* Top Decorative Toran Wave Arc */}
+          <path
+            d="M 0 10 Q 195 -12 390 10 L 390 36 Q 195 14 0 36 Z"
+            fill="url(#familyToranGrad)"
+            opacity="0.9"
+          />
+          {/* Hanging Marigold & Lotus Flower Garlands across Top Arch */}
+          {[30, 70, 110, 150, 195, 240, 280, 320, 360].map((x, i) => (
+            <g
+              key={`fam-toran-${x}`}
+              style={{
+                transformOrigin: `${x}px 20px`,
+                animation: `sway ${4 + (i % 3) * 0.8}s ease-in-out ${i * 0.2}s infinite`,
+              }}
+            >
+              <line x1={x} y1="20" x2={x} y2={65 + (i % 2) * 16} stroke="oklch(0.75 0.18 75)" strokeWidth="1.6" strokeDasharray="3 2" />
+              <circle cx={x} cy={70 + (i % 2) * 16} r="4.5" fill={i % 2 === 0 ? "oklch(0.68 0.22 25)" : "oklch(0.85 0.2 80)"} />
+            </g>
+          ))}
+          <defs>
+            <linearGradient id="familyToranGrad" x1="0" y1="0" x2="390" y2="0" gradientUnits="userSpaceOnUse">
+              <stop stopColor="oklch(0.72 0.18 75)" />
+              <stop offset="0.5" stopColor="oklch(0.88 0.2 85)" />
+              <stop offset="1" stopColor="oklch(0.72 0.18 75)" />
+            </linearGradient>
+          </defs>
+        </g>
+      )}
+
       {/* Hanging Temple Bells overlay for Courtyard, Family, Gallery, Countdown, Blessings, Venue, RSVP, and Events artwork */}
       {(kind === "courtyard" || kind === "family" || kind === "gallery" || kind === "countdown" || kind === "blessings" || kind === "venue" || kind === "haldi" || kind === "mehendi" || kind === "sangeet" || kind === "wedding" || kind === "rsvp") && (
         <g>
@@ -117,24 +134,6 @@ function FoliageOverlay({ kind }: { kind: BgKind }) {
           </g>
         </g>
       )}
-
-      {/* drifting leaves */}
-      {[
-        { x: 35, y: 280, d: "11s" },
-        { x: 345, y: 360, d: "13s" },
-        { x: 295, y: 220, d: "9s" },
-      ].map((l) => (
-        <ellipse
-          key={`${l.x}-${l.y}`}
-          cx={l.x}
-          cy={l.y}
-          rx="7"
-          ry="3.5"
-          fill="oklch(0.55 0.1 145)"
-          opacity="0.4"
-          style={{ animation: `drift ${l.d} ease-in-out infinite` }}
-        />
-      ))}
     </svg>
   );
 }
@@ -168,6 +167,8 @@ export function LivingBackground({ kind = "arch" }: { kind?: BgKind }) {
       ? "/assets/sangeet.png"
       : kind === "wedding"
       ? "/assets/wedding.jpg"
+      : kind === "universal" || kind === "universal card"
+      ? "/assets/bg-universal-card.png"
       : kind === "arch"
       ? "/assets/bg-arch-custom.jpg"
       : kind === "courtyard"
@@ -243,21 +244,7 @@ export function LivingBackground({ kind = "arch" }: { kind?: BgKind }) {
         </>
       )}
 
-      {/* Falling Flower Petals */}
-      {(kind === "opening" ? OPENING_PETALS : PETALS).map((p, i) => (
-        <span
-          key={i}
-          className="pointer-events-none absolute top-0 z-10 rounded-full blur-[0.3px]"
-          style={{
-            left: p.left,
-            width: p.size,
-            height: p.size * 0.75,
-            background: p.hue,
-            animation: `petalfall ${p.duration} linear ${p.delay} infinite`,
-            boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-          }}
-        />
-      ))}
+
 
       {/* Diya / Stage Sparkle Embers for Courtyard */}
       {kind === "courtyard" &&

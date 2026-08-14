@@ -53,6 +53,13 @@ const EVENT_METADATA: Record<
     borderStyle: "border-2 border-rose-400/70 shadow-[0_15px_35px_rgba(244,63,94,0.25)]",
     accentTrim: "from-rose-400 via-amber-500 to-rose-400",
   },
+  "Universal Card": {
+    icon: Sparkles,
+    subtitle: "Special Celebration",
+    cardGradient: "bg-gradient-to-br from-[#FFFDF0] via-[#FDE68A] to-[#F59E0B]/50",
+    borderStyle: "border-2 border-amber-500/80 shadow-[0_15px_35px_rgba(245,158,11,0.3)]",
+    accentTrim: "from-amber-400 via-yellow-500 to-amber-400",
+  },
 };
 
 interface EventsSectionProps {
@@ -66,12 +73,14 @@ export function EventsSection({ onEventChange }: EventsSectionProps) {
 
   const total = EVENTS.length;
 
+  useEffect(() => {
+    if (EVENTS[i]) {
+      onEventChange?.(EVENTS[i].name);
+    }
+  }, [i, onEventChange]);
+
   const go = (d: number) => {
-    setI((prev) => {
-      const next = (prev + d + total) % total;
-      onEventChange?.(EVENTS[next]!.name);
-      return next;
-    });
+    setI((prev) => (prev + d + total) % total);
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -95,7 +104,7 @@ export function EventsSection({ onEventChange }: EventsSectionProps) {
   };
 
   return (
-    <div className="flex h-full flex-col items-center justify-center -mt-2 pb-4 px-3 w-full max-w-sm mx-auto select-none overflow-hidden">
+    <div className="flex h-full flex-col items-center justify-center -mt-2 pb-20 px-3 w-full max-w-sm mx-auto select-none overflow-hidden relative">
       <SectionTitle>Events</SectionTitle>
 
       {/* 3D Perspective Carousel Container */}
@@ -107,7 +116,7 @@ export function EventsSection({ onEventChange }: EventsSectionProps) {
         <button
           aria-label="Previous event"
           onClick={() => go(-1)}
-          className="glass-panel absolute left-1 z-40 grid size-8 place-items-center rounded-full text-amber-950 hover:bg-white/90 active:scale-90 transition-all shadow-lg"
+          className="glass-panel absolute left-1 z-40 grid size-8 place-items-center rounded-full text-amber-950 hover:bg-white/90 active:scale-90 transition-all shadow-lg border border-gold/40 cursor-pointer"
         >
           <ChevronLeft className="size-4" />
         </button>
@@ -121,8 +130,13 @@ export function EventsSection({ onEventChange }: EventsSectionProps) {
           style={{ transformStyle: "preserve-3d" }}
         >
           {EVENTS.map((ev, idx) => {
-            const meta = EVENT_METADATA[ev.name] || { icon: Sparkles, subtitle: "Celebration", cardGradient: "bg-white/60", borderStyle: "border-white/20", accentTrim: "from-amber-300 to-amber-600" };
-            const EventIcon = meta.icon;
+            const meta = EVENT_METADATA[ev.name] || {
+              icon: Sparkles,
+              subtitle: "Special Event",
+              cardGradient: "bg-white/60",
+              borderStyle: "border-white/20",
+              accentTrim: "from-amber-300 to-amber-600",
+            };
 
             let diff = idx - i;
             if (diff > total / 2) diff -= total;
@@ -198,7 +212,11 @@ export function EventsSection({ onEventChange }: EventsSectionProps) {
                 <div className={`absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r ${meta.accentTrim} opacity-90 rounded-t-3xl`} />
 
                 {/* Event Counter Header */}
-                <div className="flex items-center justify-end text-[10px] font-semibold tracking-widest uppercase">
+                <div className="flex items-center justify-between text-[10px] font-semibold tracking-widest uppercase">
+                  <span className="text-[9px] uppercase tracking-wider text-amber-900/60 font-medium">
+                    Wedding Event
+                  </span>
+
                   <span className="font-mono text-[10px] font-bold text-amber-900/80">
                     0{idx + 1}
                   </span>
@@ -249,7 +267,7 @@ export function EventsSection({ onEventChange }: EventsSectionProps) {
         <button
           aria-label="Next event"
           onClick={() => go(1)}
-          className="glass-panel absolute right-1 z-40 grid size-8 place-items-center rounded-full text-amber-950 hover:bg-white/90 active:scale-90 transition-all shadow-lg"
+          className="glass-panel absolute right-1 z-40 grid size-8 place-items-center rounded-full text-amber-950 hover:bg-white/90 active:scale-90 transition-all shadow-lg border border-gold/40 cursor-pointer"
         >
           <ChevronRight className="size-4" />
         </button>

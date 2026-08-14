@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ChevronLeft, ChevronRight, Quote, HeartHandshake } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, HeartHandshake } from "lucide-react";
 import { FAMILY } from "../data";
 import { SectionTitle } from "../ui";
 
@@ -50,16 +50,36 @@ export function FamilySection({ onModalToggle }: { onModalToggle?: (isOpen: bool
   const member = selectedIndex !== null ? list[selectedIndex] : null;
 
   return (
-    <div className="flex h-full flex-col items-center justify-center mt-4 pb-4 px-4 max-w-sm mx-auto select-none overflow-hidden">
+    <div className="relative flex h-full flex-col items-center justify-center mt-4 pb-20 px-4 max-w-sm mx-auto select-none overflow-hidden">
+      {/* Background Royal Indian Arch SVG Accent */}
+      <svg className="absolute inset-0 size-full opacity-20 pointer-events-none z-0" viewBox="0 0 320 480" fill="none">
+        <path
+          d="M 20 120 C 20 20, 300 20, 300 120 L 300 460 L 20 460 Z"
+          stroke="url(#famArchGoldGrad)"
+          strokeWidth="1.6"
+          strokeDasharray="4 3"
+        />
+        <path
+          d="M 32 128 C 32 36, 288 36, 288 128 L 288 448 L 32 448 Z"
+          stroke="url(#famArchGoldGrad)"
+          strokeWidth="1"
+        />
+        <circle cx="160" cy="55" r="22" stroke="url(#famArchGoldGrad)" strokeWidth="1.2" />
+        <circle cx="160" cy="55" r="13" stroke="url(#famArchGoldGrad)" strokeWidth="0.8" strokeDasharray="2 2" />
+        <circle cx="160" cy="55" r="4" fill="url(#famArchGoldGrad)" />
+        <defs>
+          <linearGradient id="famArchGoldGrad" x1="0" y1="0" x2="320" y2="480" gradientUnits="userSpaceOnUse">
+            <stop stopColor="#b45309" />
+            <stop offset="0.5" stopColor="#f59e0b" />
+            <stop offset="1" stopColor="#d97706" />
+          </linearGradient>
+        </defs>
+      </svg>
+
       <SectionTitle>Our Families</SectionTitle>
 
       {/* Side Toggle Selector */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.45, delay: 0.1, ease: "easeOut" }}
-        className="glass-panel mt-3 flex rounded-full p-1 border border-gold/30 shadow-xs"
-      >
+      <div className="glass-panel mt-3 flex rounded-full p-1 border border-gold/30 shadow-xs">
         {(["bride", "groom"] as const).map((s) => (
           <button
             key={s}
@@ -76,99 +96,115 @@ export function FamilySection({ onModalToggle }: { onModalToggle?: (isOpen: bool
             {s === "bride" ? "Bride's Side" : "Groom's Side"}
           </button>
         ))}
-      </motion.div>
+      </div>
 
       {/* Family Name Subtitle */}
-      <motion.h3
-        key={side}
-        initial={{ opacity: 0, x: -30 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.45, delay: 0.15, ease: "easeOut" }}
-        className="mt-2.5 font-display text-2xl text-ink font-normal tracking-wide"
-      >
+      <h3 className="mt-2.5 font-display text-2xl text-ink font-normal tracking-wide">
         {side === "bride" ? "Sharma Parivaar" : "Mehra Parivaar"}
-      </motion.h3>
+      </h3>
 
-      {/* Family Member Cards Grid */}
-      <div className="mt-3 grid grid-cols-2 gap-2.5 w-full">
-        {list.map((m, idx) => (
-          <motion.button
-            key={m.id}
-            initial={{ opacity: 0, x: idx % 2 === 0 ? -35 : 35 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 + idx * 0.08, ease: "easeOut" }}
-            onClick={() => handleOpen(idx)}
-            className="glass-panel group relative flex flex-col items-center justify-center p-3 overflow-hidden rounded-2xl border border-gold/40 bg-white/60 backdrop-blur-xl shadow-md hover:shadow-xl hover:border-gold hover:bg-white/80 active:scale-95 transition-all text-center cursor-pointer"
-          >
-            {/* Top Gold Accent Bar */}
-            <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-amber-300 via-amber-600 to-amber-300 opacity-80" />
+      {/* Smooth, Flicker-Free Family Member Cards Grid */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={side}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
+          className="mt-3 grid grid-cols-2 gap-2.5 w-full"
+        >
+          {list.map((m, idx) => (
+            <button
+              key={m.id}
+              onClick={() => handleOpen(idx)}
+              className="glass-panel group relative flex flex-col items-center justify-center p-3 overflow-hidden rounded-2xl border border-gold/40 bg-white/85 backdrop-blur-md shadow-md hover:shadow-xl hover:border-gold hover:bg-white active:scale-95 transition-all text-center cursor-pointer transform-gpu translate-z-0"
+              style={{ willChange: "transform, opacity" }}
+            >
+              {/* Top Gold Accent Bar */}
+              <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-amber-300 via-amber-600 to-amber-300 opacity-80" />
 
-            {/* Glowing Avatar Initials Ring / Anime Image */}
-            <div className="relative my-1">
-              <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-amber-300 via-amber-500 to-amber-300 opacity-40 blur-xs group-hover:opacity-75 transition-opacity" />
-              {m.image ? (
-                <img
-                  src={m.image}
-                  alt={m.name}
-                  className="relative size-12 object-cover rounded-full shadow-md border-2 border-white/70"
-                />
-              ) : (
-                <div
-                  className={`relative flex size-11 items-center justify-center rounded-full bg-gradient-to-br ${m.gradient} text-white font-display text-base font-bold shadow-md border border-white/40`}
-                >
-                  {m.initials}
-                </div>
-              )}
-            </div>
+              {/* Avatar Ring & Portrait Image */}
+              <div className="relative my-1">
+                <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-amber-300 via-amber-500 to-amber-300 opacity-40 blur-xs group-hover:opacity-75 transition-opacity" />
+                {m.image ? (
+                  <img
+                    src={m.image}
+                    alt={m.name}
+                    className="relative size-12 object-cover rounded-full shadow-md border-2 border-white/80"
+                  />
+                ) : (
+                  <div
+                    className={`relative flex size-11 items-center justify-center rounded-full bg-gradient-to-br ${m.gradient} text-white font-display text-base font-bold shadow-md border border-white/40`}
+                  >
+                    {m.initials}
+                  </div>
+                )}
+              </div>
 
-            {/* Name */}
-            <p className="mt-1 font-display text-xs font-semibold text-ink leading-tight truncate w-full">
-              {m.name}
-            </p>
+              {/* Name */}
+              <p className="mt-1 font-display text-xs font-semibold text-ink leading-tight truncate w-full">
+                {m.name}
+              </p>
 
-            {/* Relation Subtitle Pill */}
-            <span className="mt-1 px-2 py-0.5 text-[8.5px] uppercase tracking-wider text-amber-900 bg-amber-500/15 rounded-full border border-gold/30 w-full truncate font-semibold">
-              {m.relation}
-            </span>
-          </motion.button>
-        ))}
-      </div>
+              {/* Relation Subtitle Pill */}
+              <span className="mt-1 px-2 py-0.5 text-[8.5px] uppercase tracking-wider text-amber-900 bg-amber-500/15 rounded-full border border-gold/30 w-full truncate font-semibold">
+                {m.relation}
+              </span>
+            </button>
+          ))}
+        </motion.div>
+      </AnimatePresence>
 
       {/* Redesigned Fully Enhanced Bottom-to-Top Family Popup Modal Sheet */}
       <AnimatePresence>
         {isModalOpen && member && (
-          <div className="fixed inset-0 z-50 flex items-end justify-center overflow-hidden">
+          <div className="absolute inset-0 z-50 flex items-end justify-center overflow-hidden">
             {/* Backdrop Click to Close */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
               onClick={handleClose}
-              className="absolute inset-0 bg-black/60 backdrop-blur-xs"
+              className="absolute inset-0 bg-black/65 backdrop-blur-sm"
             />
 
-            {/* Sliding Popup Sheet */}
+            {/* Sliding Popup Sheet with Enhanced Gold Metallic Borders */}
             <motion.div
               initial={{ y: "100%", opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: "100%", opacity: 0 }}
-              transition={{ type: "spring", damping: 28, stiffness: 280 }}
+              transition={{ type: "spring", damping: 30, stiffness: 320 }}
               onTouchStart={handleModalTouchStart}
               onTouchEnd={handleModalTouchEnd}
-              className="relative z-10 w-full max-w-md h-[65vh] rounded-t-[2.5rem] p-5 glass-panel bg-gradient-to-b from-[#FFFDF7]/98 via-[#F9F3E5]/98 to-[#F2E7D3]/98 backdrop-blur-2xl border-t-2 border-x border-gold/60 shadow-[0_-25px_60px_rgba(0,0,0,0.45)] flex flex-col justify-between items-center text-center overflow-hidden"
+              className="relative z-10 w-full max-w-md h-[68vh] max-h-[560px] rounded-t-[2.8rem] p-5 glass-panel bg-gradient-to-b from-[#FFFDF8] via-[#FAF4E8] to-[#F3E8D5] backdrop-blur-2xl border-t-4 border-x-2 border-amber-400/80 shadow-[0_-20px_60px_rgba(217,119,6,0.35)] flex flex-col justify-between items-center text-center overflow-hidden transform-gpu translate-z-0"
             >
-              {/* Top Gold Trim Accent Line */}
-              <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-amber-300 via-yellow-500 to-amber-300 opacity-90 rounded-t-[2.5rem]" />
+              {/* Top Gold Metallic Bevel Trim Line */}
+              <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-300 opacity-95 rounded-t-[2.8rem] shadow-sm" />
 
-              {/* Decorative Mandalas & Arch Floral Motif Textured Overlay */}
-              <svg className="absolute inset-0 size-full opacity-[0.08] pointer-events-none" viewBox="0 0 100 120" fill="none">
-                <path d="M 10 30 Q 50 0 90 30 L 90 120 L 10 120 Z" stroke="currentColor" strokeWidth="1.2" className="text-amber-900" />
-                <circle cx="50" cy="60" r="28" stroke="currentColor" strokeWidth="0.8" strokeDasharray="2 2" className="text-amber-800" />
+              {/* Inner Fine Gold Border Frame Accent */}
+              <div className="absolute inset-2.5 rounded-t-[2.2rem] border border-amber-500/30 pointer-events-none" />
+
+              {/* Enhanced Royal Arch & Mandala Motif Background SVG Overlay */}
+              <svg className="absolute inset-0 size-full opacity-25 pointer-events-none" viewBox="0 0 200 240" fill="none">
+                <path d="M 15 50 C 15 8, 185 8, 185 50 L 185 235 L 15 235 Z" stroke="url(#modalArchGoldGrad)" strokeWidth="1.6" />
+                <path d="M 24 58 C 24 18, 176 18, 176 58 L 176 226 L 24 226 Z" stroke="url(#modalArchGoldGrad)" strokeWidth="1" strokeDasharray="3 3" />
+                {/* Center Royal Mandala Ring & Star Motif */}
+                <circle cx="100" cy="115" r="42" stroke="url(#modalArchGoldGrad)" strokeWidth="1.2" opacity="0.7" />
+                <circle cx="100" cy="115" r="28" stroke="url(#modalArchGoldGrad)" strokeWidth="0.8" strokeDasharray="2 2" />
+                <polygon points="100,78 107,107 137,115 107,123 100,152 93,123 63,115 93,107" fill="url(#modalArchGoldGrad)" opacity="0.18" />
+                <defs>
+                  <linearGradient id="modalArchGoldGrad" x1="0" y1="0" x2="200" y2="240" gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#b45309" />
+                    <stop offset="0.5" stopColor="#f59e0b" />
+                    <stop offset="1" stopColor="#d97706" />
+                  </linearGradient>
+                </defs>
               </svg>
 
               {/* Top Bar Header */}
-              <div className="w-full flex items-center justify-between pt-1 px-1 relative z-20">
-                <span className="font-mono text-xs font-bold text-amber-900/90 bg-amber-500/10 px-2.5 py-1 rounded-full border border-gold/30">
+              <div className="w-full flex items-center justify-between pt-1 px-2 relative z-20">
+                <span className="font-mono text-xs font-bold text-amber-900 bg-amber-500/15 px-3 py-1 rounded-full border border-amber-400/50 shadow-xs">
                   0{selectedIndex! + 1} / 0{list.length}
                 </span>
 
@@ -180,63 +216,63 @@ export function FamilySection({ onModalToggle }: { onModalToggle?: (isOpen: bool
                 <button
                   onClick={handleClose}
                   aria-label="Close modal"
-                  className="grid size-8 place-items-center rounded-full bg-amber-900/10 text-amber-950 hover:bg-amber-900/20 active:scale-95 transition-all border border-gold/30 cursor-pointer"
+                  className="grid size-8.5 place-items-center rounded-full bg-amber-950/10 text-amber-950 hover:bg-amber-950/20 active:scale-95 transition-all border border-amber-400/50 cursor-pointer shadow-xs"
                 >
-                  <X className="size-4" />
+                  <X className="size-4.5" />
                 </button>
               </div>
 
-              {/* Center Member Content Container */}
-              <motion.div
-                key={member.id}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.35, ease: "easeOut" }}
-                className="my-auto w-full flex flex-col items-center justify-center relative z-20"
-              >
-                {/* Avatar with Radiant Gold Glow & AI Portrait */}
-                <div className="relative my-1">
-                  <div className="absolute -inset-2 rounded-full bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 opacity-60 blur-md animate-pulse" />
-                  {member.image ? (
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="relative size-20 object-cover rounded-full shadow-2xl border-2 border-white/90"
-                    />
-                  ) : (
-                    <div
-                      className={`relative flex size-20 items-center justify-center rounded-full bg-gradient-to-br ${member.gradient} text-white font-display text-xl font-bold shadow-2xl border-2 border-white/80`}
-                    >
-                      {member.initials}
+              {/* Center Member Content (Increased Picture Size, Smooth Transition) */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={member.id}
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.96 }}
+                  transition={{ duration: 0.22, ease: "easeOut" }}
+                  className="my-auto w-full flex flex-col items-center justify-center relative z-20 py-2"
+                >
+                  {/* ENHANCED LARGE PICTURE (size-36 to size-40) with Glowing Gold Double Border */}
+                  <div className="relative mt-2 mb-0">
+                    {/* Outer Pulsing Golden Halo Glow */}
+                    <div className="absolute -inset-3 rounded-full bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 opacity-70 blur-md animate-pulse" />
+                    
+                    {/* Gold Metallic Bevel Container */}
+                    <div className="relative p-1 rounded-full bg-gradient-to-br from-amber-200 via-yellow-400 to-amber-600 shadow-[0_12px_28px_rgba(180,83,9,0.45)] border-2 border-amber-300/80">
+                      {member.image ? (
+                        <img
+                          src={member.image}
+                          alt={member.name}
+                          className="relative size-36 sm:size-40 object-cover rounded-full shadow-inner border-2 border-white/90"
+                        />
+                      ) : (
+                        <div
+                          className={`relative flex size-36 sm:size-40 items-center justify-center rounded-full bg-gradient-to-br ${member.gradient} text-white font-display text-3xl font-extrabold shadow-inner border-2 border-white/90`}
+                        >
+                          {member.initials}
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
+                  </div>
 
-                {/* Name */}
-                <h4 className="font-display text-xl sm:text-2xl font-bold text-amber-950 drop-shadow-xs">
-                  {member.name}
-                </h4>
+                  {/* Name */}
+                  <h4 className="mt-1 font-display text-2xl sm:text-3xl font-extrabold text-amber-950 drop-shadow-xs">
+                    {member.name}
+                  </h4>
 
-                {/* Honorific Role Badge */}
-                <div className="mt-1 px-3 py-0.5 text-[10px] font-bold uppercase tracking-[0.18em] text-amber-900 bg-amber-500/15 rounded-full border border-gold/40 shadow-xs">
-                  {member.honorific}
-                </div>
-
-                {/* Personal Blessing Thought Box */}
-                <div className="mt-2.5 w-full bg-white/70 backdrop-blur-md border border-gold/35 rounded-2xl p-3 shadow-sm relative overflow-hidden">
-                  <Quote className="size-4 text-amber-800/50 mb-0.5 mx-auto" />
-                  <p className="font-display text-sm italic text-amber-950 font-medium leading-relaxed px-1">
-                    "{member.thought}"
-                  </p>
-                </div>
-              </motion.div>
+                  {/* Honorific Role Badge */}
+                  <div className="mt-2 px-4 py-1 text-xs font-bold uppercase tracking-[0.18em] text-amber-900 bg-amber-500/20 rounded-full border border-amber-400/60 shadow-xs">
+                    {member.honorific}
+                  </div>
+                </motion.div>
+              </AnimatePresence>
 
               {/* In-Modal Navigation Control Bar */}
-              <div className="w-full flex items-center justify-between gap-3 pt-2 relative z-20">
+              <div className="w-full flex items-center justify-between gap-3 pt-2 pb-1 relative z-20">
                 <button
                   onClick={() => goModal(-1)}
                   aria-label="Previous member"
-                  className="flex items-center gap-1.5 rounded-full bg-amber-900/10 px-4 py-1.5 text-xs font-bold text-amber-950 hover:bg-amber-900/20 active:scale-95 transition-all border border-gold/30 cursor-pointer"
+                  className="flex items-center gap-1.5 rounded-full bg-amber-950/10 px-4 py-1.5 text-xs font-bold text-amber-950 hover:bg-amber-950/20 active:scale-95 transition-all border border-amber-400/40 cursor-pointer shadow-xs"
                 >
                   <ChevronLeft className="size-4 text-amber-800" />
                   <span>Prev</span>
@@ -249,7 +285,7 @@ export function FamilySection({ onModalToggle }: { onModalToggle?: (isOpen: bool
                       key={`family-modal-dot-${idx}`}
                       onClick={() => setSelectedIndex(idx)}
                       className={`h-2 rounded-full transition-all duration-300 ${
-                        idx === selectedIndex ? "w-5 bg-amber-900" : "w-2 bg-amber-900/30"
+                        idx === selectedIndex ? "w-6 bg-amber-900 shadow-xs" : "w-2 bg-amber-900/30"
                       }`}
                     />
                   ))}
@@ -258,7 +294,7 @@ export function FamilySection({ onModalToggle }: { onModalToggle?: (isOpen: bool
                 <button
                   onClick={() => goModal(1)}
                   aria-label="Next member"
-                  className="flex items-center gap-1.5 rounded-full bg-amber-900 px-4 py-1.5 text-xs font-bold text-white hover:bg-amber-800 active:scale-95 transition-all shadow-sm cursor-pointer"
+                  className="flex items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-900 to-amber-950 px-4 py-1.5 text-xs font-bold text-white hover:from-amber-800 hover:to-amber-900 active:scale-95 transition-all shadow-md cursor-pointer border border-amber-400/40"
                 >
                   <span>Next</span>
                   <ChevronRight className="size-4 text-white" />

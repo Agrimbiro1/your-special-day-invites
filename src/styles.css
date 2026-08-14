@@ -6,16 +6,6 @@
 
 /*
  * Design system definition.
- *
- * The @theme inline block maps CSS custom properties to Tailwind utility
- * classes (e.g. --color-primary -> bg-primary, text-primary).
- *
- * The :root and .dark blocks define the actual color values using oklch.
- * All colors MUST use oklch format.
- *
- * To add a new semantic color:
- * 1. Add the variable to :root (light value) and .dark (dark value)
- * 2. Register it in @theme inline as --color-<name>: var(--<name>)
  */
 
 @theme inline {
@@ -121,15 +111,7 @@
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
+  --chart-5: oklch(0.769 0.188 70.08);
 }
 
 @layer base {
@@ -165,63 +147,27 @@ body {
   font-family: var(--font-body);
 }
 
-@keyframes sway {
-  0%, 100% { transform: rotate(-2.2deg); }
-  50% { transform: rotate(2.2deg); }
-}
-@keyframes drift {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(6px, -8px, 0); }
-}
-@keyframes flap {
-  0%, 100% { transform: scaleY(1); }
-  50% { transform: scaleY(0.35); }
-}
-@keyframes flyacross {
-  0% { transform: translate3d(-15vw, 12vh, 0) scale(0.7); opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { transform: translate3d(115vw, -6vh, 0) scale(1); opacity: 0; }
-}
-@keyframes petalfall {
-  0% { transform: translate3d(0, -10vh, 0) rotate(0deg); opacity: 0; }
-  10% { opacity: 0.85; }
-  100% { transform: translate3d(0, 105vh, 0) rotate(320deg); opacity: 0; }
-}
-@keyframes twinkle {
-  0%, 100% { opacity: 0.15; }
-  50% { opacity: 0.7; }
-}
-@keyframes softin {
-  from { opacity: 0; transform: translate3d(0, 14px, 0) scale(0.985); }
-  to { opacity: 1; transform: translate3d(0, 0, 0); }
-}
-@keyframes spinslow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-@keyframes flipdown {
-  from { transform: translate3d(0, -55%, 0) scale(0.9); opacity: 0; }
-  to { transform: translate3d(0, 0, 0); opacity: 1; }
+/* Hide scrollbars across all browsers and popup modal containers */
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
 }
 
-@keyframes swingBell {
-  0%, 100% { transform: rotate(-4deg); }
-  50% { transform: rotate(4deg); }
+* {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
 }
 
-@keyframes shimmerGold {
-  0%, 100% { opacity: 0.2; transform: scale(0.9); }
-  50% { opacity: 0.85; transform: scale(1.15); }
-}
-
-@keyframes gentleFloat {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(0, -6px, 0); }
-}
-
-@utility anim-soft-in {
-  animation: softin 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+@utility scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
 }
 
 @utility glass-panel {
@@ -234,22 +180,68 @@ body {
   will-change: transform, opacity;
 }
 
-@keyframes slideUpSheet {
-  from { transform: translate3d(0, 100%, 0); opacity: 0.9; }
-  to { transform: translate3d(0, 0, 0); opacity: 1; }
+/* Force GPU compositing layers and backface-visibility for 90 FPS performance on mobile */
+html,
+body,
+#root,
+.glass-panel,
+button,
+video,
+img,
+svg,
+main,
+nav {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
-@keyframes slideDownSheet {
-  from { transform: translate3d(0, 0, 0); opacity: 1; }
-  to { transform: translate3d(0, 100%, 0); opacity: 0; }
+/* Disable and strip away native media controls & play overlays on iOS and Mobile WebKit */
+video::-webkit-media-controls {
+  display: none !important;
+  -webkit-appearance: none !important;
+}
+video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  -webkit-appearance: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+video::-webkit-media-controls-play-button {
+  display: none !important;
+  -webkit-appearance: none !important;
+}
+video::-webkit-media-controls-overlay-play-button {
+  display: none !important;
+  -webkit-appearance: none !important;
+}
+video::-webkit-media-controls-enclosure {
+  display: none !important;
+}
+video::-webkit-media-controls-panel {
+  display: none !important;
 }
 
-@utility anim-sheet-up {
-  animation: slideUpSheet 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+/* Increase display screen size by 6% in mobile view only (< 640px) & lock GPU compositing */
+@media (max-width: 639.98px) {
+  .mobile-display-scale {
+    transform: scale(1.06) translateZ(0);
+    -webkit-transform: scale(1.06) translateZ(0);
+    transform-origin: center center;
+    will-change: transform;
+  }
+
+  /* Mobile Backdrop Blur Optimization (prevents GPU frame drops) */
+  .backdrop-blur-2xl,
+  .backdrop-blur-xl,
+  .backdrop-blur-lg,
+  .backdrop-blur-md,
+  .backdrop-blur-2xl {
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+  }
 }
 
-@utility anim-sheet-down {
-  animation: slideDownSheet 0.3s cubic-bezier(0.7, 0, 0.84, 0) forwards;
-}
 
 

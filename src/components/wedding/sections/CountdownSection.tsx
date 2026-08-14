@@ -30,7 +30,7 @@ export function CountdownSection() {
   ];
 
   return (
-    <div className="flex h-full flex-col items-center justify-center -mt-12 pb-4 px-3 w-full max-w-sm mx-auto select-none overflow-hidden">
+    <div className="flex h-full flex-col items-center justify-center -mt-16 sm:-mt-18 pb-4 px-3 w-full max-w-sm mx-auto select-none overflow-hidden">
       <SectionTitle>Counting Down</SectionTitle>
 
       {/* 2x2 Grid using the Arch Frame PNG with Directional Framer Motion Animations */}

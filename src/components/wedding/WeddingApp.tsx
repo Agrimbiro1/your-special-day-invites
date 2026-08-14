@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import {
-  Battery,
   CalendarHeart,
   Camera,
   ChevronLeft,
@@ -11,14 +10,13 @@ import {
   Hourglass,
   MailOpen,
   MapPin,
-  Signal,
   Sparkles,
   Users,
-  Wifi,
 } from "lucide-react";
 import { LivingBackground, type BgKind } from "./LivingBackground";
 import { OpeningAnimation } from "./OpeningAnimation";
 import { FlowerShower } from "./FlowerShower";
+import { CelebrationExplosion } from "./CelebrationExplosion";
 import { DesktopGoldenArt } from "./DesktopGoldenArt";
 import { HomeSection } from "./sections/HomeSection";
 import { EventsSection } from "./sections/EventsSection";
@@ -46,6 +44,7 @@ export function WeddingApp() {
   const [active, setActive] = useState(0);
   const [showIntro, setShowIntro] = useState(true);
   const [isShowerActive, setIsShowerActive] = useState(false);
+  const [isCelebrationActive, setIsCelebrationActive] = useState(false);
   const [isNavHidden, setIsNavHidden] = useState(false);
   const [activeEventBg, setActiveEventBg] = useState<BgKind>("haldi");
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -67,11 +66,23 @@ export function WeddingApp() {
   const isLastSection = active === SECTIONS.length - 1;
   const currentBg = section.id === "events" ? activeEventBg : (section.bg as BgKind);
 
-  const handleOpenInvitation = () => {
+  const triggerHeavyShower = () => {
     setIsShowerActive(true);
     setTimeout(() => {
+      setIsShowerActive(false);
+    }, 3800);
+  };
+
+  const triggerCelebration = () => {
+    setIsCelebrationActive(true);
+    triggerHeavyShower();
+  };
+
+  const handleOpenInvitation = () => {
+    triggerCelebration();
+    setTimeout(() => {
       setShowIntro(false);
-    }, 2250);
+    }, 850);
   };
 
   const handleNext = () => {
@@ -122,8 +133,8 @@ export function WeddingApp() {
         />
       </div>
 
-      {/* Desktop Gold iPhone Frame Outer Bezel (Increased screen size by 7%) */}
-      <div className="relative flex h-full w-full max-w-[375px] items-center justify-center sm:h-[min(100svh,762px)] z-20">
+      {/* Desktop Gold iPhone Frame Outer Bezel */}
+      <div className="relative flex h-full w-full max-w-[371px] items-center justify-center sm:h-[min(100svh,754px)] z-20 mobile-display-scale">
         {/* Hardware Volume Up Button (Desktop Frame) */}
         <div className="hidden sm:block absolute -left-[10px] top-[140px] h-[48px] w-[5px] rounded-l-md bg-gradient-to-r from-[#d4b46e] to-[#ab873e] shadow-md z-0" />
         {/* Hardware Volume Down Button (Desktop Frame) */}
@@ -137,21 +148,6 @@ export function WeddingApp() {
           <div
             className="relative h-full w-full overflow-hidden bg-background sm:rounded-[2.6rem] border border-black/10 shadow-inner"
           >
-            {/* Top Desktop iPhone Status Bar Overlay */}
-            <div className="hidden sm:flex absolute top-3 inset-x-6 z-40 justify-between items-center text-[10px] font-bold text-black/75 pointer-events-none tracking-tight">
-              <span>2:57 PM</span>
-              <div className="flex items-center gap-1.5 opacity-80">
-                <Signal className="size-3 text-black" />
-                <Wifi className="size-3 text-black" />
-                <Battery className="size-3.5 text-black fill-black" />
-              </div>
-            </div>
-
-            {/* Dynamic Island Camera Notch (Desktop View) */}
-            <div className="hidden sm:flex absolute top-2.5 left-1/2 -translate-x-1/2 z-50 h-[26px] w-[110px] items-center justify-end rounded-full bg-black px-2 shadow-sm pointer-events-none">
-              <span className="size-2.5 rounded-full bg-[#15151e] border border-white/10" />
-            </div>
-
             {/* AnimatePresence Opening Intro overlay overlaying the main app */}
             <AnimatePresence mode="wait">
               {showIntro && (
@@ -159,18 +155,26 @@ export function WeddingApp() {
               )}
             </AnimatePresence>
 
-            {/* Celebration Flower Shower Petal Rain Overlay */}
-            {isShowerActive && (
-              <FlowerShower onComplete={() => setIsShowerActive(false)} />
+            {/* Party Bomb Firecracker Confetti Magical Celebration Animation Overlay */}
+            {isCelebrationActive && (
+              <CelebrationExplosion onComplete={() => setIsCelebrationActive(false)} />
             )}
+
+            {/* Continuous / Heavy / Slow Flower Shower Petal Overlay */}
+            <FlowerShower
+              heavy={isShowerActive}
+              slow={!isFirstSection && !showIntro && !isShowerActive}
+              continuous={true}
+            />
 
             <LivingBackground kind={currentBg} />
 
-            <main className="absolute inset-x-0 bottom-20 top-0 overflow-hidden z-20 sm:top-6">
+            <main className="absolute inset-0 overflow-hidden z-20">
               <div key={section.id} className="h-full">
                 <Body
                   guestName={guestName}
                   onModalToggle={setIsNavHidden}
+                  onShowerTrigger={triggerCelebration}
                   onEventChange={(eventName: string) => {
                     const kind = eventName.toLowerCase() as BgKind;
                     setActiveEventBg(kind);
