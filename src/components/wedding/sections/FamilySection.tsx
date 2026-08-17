@@ -1,15 +1,22 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, HeartHandshake } from "lucide-react";
-import { FAMILY } from "../data";
+import { FAMILY, FamilyMember } from "../data";
 import { SectionTitle } from "../ui";
+import { ResponsiveImage } from "@/components/ui/ResponsiveImage";
 
-export function FamilySection({ onModalToggle }: { onModalToggle?: (isOpen: boolean) => void }) {
+interface FamilySectionProps {
+  familyData?: Record<"bride" | "groom", FamilyMember[]>;
+  onModalToggle?: (isOpen: boolean) => void;
+}
+
+export function FamilySection({ familyData, onModalToggle }: FamilySectionProps) {
   const [side, setSide] = useState<"bride" | "groom">("bride");
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const modalTouchStartX = useRef<number | null>(null);
 
-  const list = FAMILY[side];
+  const data = familyData || FAMILY;
+  const list = data[side] || [];
   const isModalOpen = selectedIndex !== null;
 
   const handleOpen = (idx: number) => {
@@ -48,6 +55,7 @@ export function FamilySection({ onModalToggle }: { onModalToggle?: (isOpen: bool
   };
 
   const member = selectedIndex !== null ? list[selectedIndex] : null;
+  const formatNum = (n: number) => String(n).padStart(2, "0");
 
   return (
     <div className="relative flex h-full flex-col items-center justify-center mt-4 pb-20 px-4 max-w-sm mx-auto select-none overflow-hidden">
@@ -103,7 +111,7 @@ export function FamilySection({ onModalToggle }: { onModalToggle?: (isOpen: bool
         {side === "bride" ? "Sharma Parivaar" : "Mehra Parivaar"}
       </h3>
 
-      {/* Smooth, Flicker-Free Family Member Cards Grid */}
+      {/* Smooth, Flicker-Free Dynamic Family Member Cards Grid */}
       <AnimatePresence mode="wait">
         <motion.div
           key={side}
@@ -111,11 +119,15 @@ export function FamilySection({ onModalToggle }: { onModalToggle?: (isOpen: bool
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -6 }}
           transition={{ duration: 0.25, ease: "easeOut" }}
-          className="mt-3 grid grid-cols-2 gap-2.5 w-full"
+          className={`mt-3 grid grid-cols-2 gap-2.5 w-full ${
+            list.length > 6
+              ? "max-h-[350px] overflow-y-auto no-scrollbar pr-1 pb-2"
+              : ""
+          }`}
         >
           {list.map((m, idx) => (
             <button
-              key={m.id}
+              key={m.id || idx}
               onClick={() => handleOpen(idx)}
               className="glass-panel group relative flex flex-col items-center justify-center p-3 overflow-hidden rounded-2xl border border-gold/40 bg-white/85 backdrop-blur-md shadow-md hover:shadow-xl hover:border-gold hover:bg-white active:scale-95 transition-all text-center cursor-pointer transform-gpu translate-z-0"
               style={{ willChange: "transform, opacity" }}
@@ -127,7 +139,7 @@ export function FamilySection({ onModalToggle }: { onModalToggle?: (isOpen: bool
               <div className="relative my-1">
                 <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-amber-300 via-amber-500 to-amber-300 opacity-40 blur-xs group-hover:opacity-75 transition-opacity" />
                 {m.image ? (
-                  <img
+                  <ResponsiveImage
                     src={m.image}
                     alt={m.name}
                     className="relative size-12 object-cover rounded-full shadow-md border-2 border-white/80"
@@ -201,7 +213,7 @@ export function FamilySection({ onModalToggle }: { onModalToggle?: (isOpen: bool
               {/* Top Bar Header */}
               <div className="w-full flex items-center justify-between pt-1 px-2 relative z-20">
                 <span className="font-mono text-xs font-bold text-amber-900 bg-amber-500/15 px-3 py-1 rounded-full border border-amber-400/50 shadow-xs">
-                  0{selectedIndex! + 1} / 0{list.length}
+                  {formatNum(selectedIndex! + 1)} / {formatNum(list.length)}
                 </span>
 
                 <span className="font-display text-sm font-bold uppercase tracking-wider text-amber-950 flex items-center gap-1.5">
@@ -232,7 +244,7 @@ export function FamilySection({ onModalToggle }: { onModalToggle?: (isOpen: bool
                   <div className="relative mt-2 mb-2.5">
                     <div className="relative p-1 rounded-full bg-gradient-to-br from-amber-200 via-yellow-400 to-amber-600 shadow-[0_12px_28px_rgba(180,83,9,0.45)] border-2 border-amber-300/80">
                       {member.image ? (
-                        <img
+                        <ResponsiveImage
                           src={member.image}
                           alt={member.name}
                           className="relative size-36 sm:size-40 object-cover rounded-full shadow-inner border-2 border-white/90"
@@ -271,12 +283,12 @@ export function FamilySection({ onModalToggle }: { onModalToggle?: (isOpen: bool
                 </button>
 
                 {/* Pagination Dots */}
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center justify-center gap-1.5 max-w-[150px] sm:max-w-[190px] overflow-x-auto no-scrollbar py-1">
                   {list.map((_, idx) => (
                     <button
                       key={`family-modal-dot-${idx}`}
                       onClick={() => setSelectedIndex(idx)}
-                      className={`h-2 rounded-full transition-all duration-300 ${
+                      className={`h-2 rounded-full transition-all duration-300 flex-shrink-0 ${
                         idx === selectedIndex ? "w-6 bg-amber-900 shadow-xs" : "w-2 bg-amber-900/30"
                       }`}
                     />

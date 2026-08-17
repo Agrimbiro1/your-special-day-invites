@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
+import { getWebpPath } from "@/components/ui/ResponsiveImage";
 
 export type BgKind =
   | "opening"
@@ -156,34 +157,34 @@ function FlyingBird({ delay, top, dur }: { delay: string; top: string; dur: stri
 export function LivingBackground({ kind = "arch" }: { kind?: BgKind }) {
   const imgSrc =
     kind === "opening"
-      ? "/assets/open%20animation.jpg"
+      ? "/assets/open%20animation.webp"
       : kind === "rsvp"
-      ? "/assets/rsvp%20background.jpg"
+      ? "/assets/rsvp%20background.webp"
       : kind === "haldi"
-      ? "/assets/haldi.jpg"
+      ? "/assets/haldi.webp"
       : kind === "mehendi"
-      ? "/assets/mehendi.jpg"
+      ? "/assets/mehendi.webp"
       : kind === "sangeet"
-      ? "/assets/sangeet.png"
+      ? "/assets/sangeet.webp"
       : kind === "wedding"
-      ? "/assets/wedding.jpg"
+      ? "/assets/wedding.webp"
       : kind === "universal" || kind === "universal card"
-      ? "/assets/bg-universal-card.png"
+      ? "/assets/bg-universal-card.webp"
       : kind === "arch"
-      ? "/assets/bg-arch-custom.jpg"
+      ? "/assets/bg-arch-custom.webp"
       : kind === "courtyard"
-      ? "/assets/bg-courtyard-custom.jpg"
+      ? "/assets/bg-courtyard-enhanced.webp"
       : kind === "family"
-      ? "/assets/bg-family-custom.jpg"
+      ? "/assets/bg-family-custom.webp"
       : kind === "gallery"
-      ? "/assets/bg-gallery-custom.jpg"
+      ? "/assets/bg-gallery-custom.webp"
       : kind === "countdown"
-      ? "/assets/bg-countdown-custom.jpg"
+      ? "/assets/bg-countdown-custom.webp"
       : kind === "blessings"
-      ? "/assets/bg-blessings-custom.jpg"
+      ? "/assets/bg-blessings-custom.webp"
       : kind === "venue"
-      ? "/assets/bg-venue-custom.jpg"
-      : "/assets/bg-thankyou-custom.jpg";
+      ? "/assets/bg-venue-custom.webp"
+      : "/assets/bg-thankyou-custom.webp";
 
   return (
     <div className="absolute inset-0 overflow-hidden bg-[oklch(0.18_0.03_150)] z-1">

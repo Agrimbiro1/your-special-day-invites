@@ -12,63 +12,32 @@ import {
   Maximize2,
 } from "lucide-react";
 import { SectionTitle } from "../ui";
+import { PHOTOS as DEFAULT_PHOTOS, GalleryPhoto } from "../data";
+import { ResponsiveImage } from "@/components/ui/ResponsiveImage";
 
-const PHOTOS = [
-  {
-    id: 1,
-    caption: "The First Hello",
-    subtitle: "January 2025",
-    date: "Jan 2025",
-    tint: "from-rose-600/90 via-amber-500/80 to-yellow-600/90",
-    icon: Heart,
-    image: "/assets/gallery/hello.jpg",
-  },
-  {
-    id: 2,
-    caption: "Roka Ceremony",
-    subtitle: "February 2026",
-    date: "Feb 2026",
-    tint: "from-amber-600/90 via-rose-500/80 to-purple-700/90",
-    icon: Sparkles,
-    image: "/assets/gallery/roka.jpg",
-  },
-  {
-    id: 3,
-    caption: "Jaipur Evenings",
-    subtitle: "July 2026",
-    date: "Jul 2026",
-    tint: "from-teal-600/90 via-emerald-500/80 to-amber-600/90",
-    icon: Camera,
-    image: "/assets/gallery/jaipur.jpg",
-  },
-  {
-    id: 4,
-    caption: "Family Togetherness",
-    subtitle: "November 2026",
-    date: "Nov 2026",
-    tint: "from-indigo-600/90 via-purple-500/80 to-rose-600/90",
-    icon: Users,
-    image: "/assets/gallery/together.jpg",
-  },
-  {
-    id: 5,
-    caption: "Forever & Always",
-    subtitle: "December 2026",
-    date: "Dec 2026",
-    tint: "from-amber-500/90 via-yellow-400/80 to-rose-700/90",
-    icon: Gem,
-    image: "/assets/gallery/forever.jpg",
-  },
+const DEFAULT_TINTS = [
+  "from-rose-600/90 via-amber-500/80 to-yellow-600/90",
+  "from-amber-600/90 via-rose-500/80 to-purple-700/90",
+  "from-teal-600/90 via-emerald-500/80 to-amber-600/90",
+  "from-indigo-600/90 via-purple-500/80 to-rose-600/90",
+  "from-amber-500/90 via-yellow-400/80 to-rose-700/90",
 ];
 
-export function GallerySection({ onModalToggle }: { onModalToggle?: (isOpen: boolean) => void }) {
+interface GallerySectionProps {
+  photos?: GalleryPhoto[];
+  onModalToggle?: (isOpen: boolean) => void;
+}
+
+export function GallerySection({ photos, onModalToggle }: GallerySectionProps) {
   const [i, setI] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalIndex, setModalIndex] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
   const touchStartX = useRef<number | null>(null);
   const modalTouchStartX = useRef<number | null>(null);
-  const total = PHOTOS.length;
+
+  const photosList = photos && photos.length > 0 ? photos : DEFAULT_PHOTOS;
+  const total = photosList.length;
 
   const go = (d: number) => setI((p) => (p + d + total) % total);
   const goModal = (d: number) => setModalIndex((p) => (p + d + total) % total);
@@ -133,8 +102,11 @@ export function GallerySection({ onModalToggle }: { onModalToggle?: (isOpen: boo
     modalTouchStartX.current = null;
   };
 
-  const activeModalPhoto = PHOTOS[modalIndex]!;
-  const ModalIcon = activeModalPhoto.icon;
+  const activeModalPhoto = photosList[modalIndex] || photosList[0]!;
+  const ModalIcon = activeModalPhoto.icon || Camera;
+  const modalTint = activeModalPhoto.tint || DEFAULT_TINTS[modalIndex % DEFAULT_TINTS.length];
+
+  const formatNum = (n: number) => String(n).padStart(2, "0");
 
   return (
     <div className="flex h-full flex-col items-center justify-center -mt-10 sm:-mt-12 pb-4 px-2 w-full max-w-sm mx-auto select-none overflow-hidden">
@@ -165,13 +137,14 @@ export function GallerySection({ onModalToggle }: { onModalToggle?: (isOpen: boo
           className="relative w-[155px] sm:w-[170px] h-[245px] flex items-center justify-center"
           style={{ transformStyle: "preserve-3d" }}
         >
-          {PHOTOS.map((photo, idx) => {
+          {photosList.map((photo, idx) => {
             let diff = idx - i;
             if (diff > total / 2) diff -= total;
             if (diff < -total / 2) diff += total;
 
             const isCenter = diff === 0;
-            const Icon = photo.icon;
+            const Icon = photo.icon || Camera;
+            const tint = photo.tint || DEFAULT_TINTS[idx % DEFAULT_TINTS.length];
 
             let translateX = "0%";
             let translateY = "0px";
@@ -221,7 +194,7 @@ export function GallerySection({ onModalToggle }: { onModalToggle?: (isOpen: boo
 
             return (
               <div
-                key={photo.id}
+                key={photo.id || idx}
                 onClick={() => {
                   if (isCenter) {
                     handleOpenModal(idx);
@@ -250,7 +223,7 @@ export function GallerySection({ onModalToggle }: { onModalToggle?: (isOpen: boo
                 <div className="relative my-auto w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-inner border border-gold/30 flex flex-col items-center justify-center group">
                   {photo.image ? (
                     <>
-                      <img
+                      <ResponsiveImage
                         src={photo.image}
                         alt={photo.caption}
                         className="absolute inset-0 size-full object-cover transition-transform duration-700 group-hover:scale-110"
@@ -260,15 +233,17 @@ export function GallerySection({ onModalToggle }: { onModalToggle?: (isOpen: boo
                         <span className="font-display text-xs font-bold tracking-wide drop-shadow-md block">
                           {photo.caption}
                         </span>
-                        <span className="text-[8.5px] uppercase tracking-[0.18em] opacity-90 font-medium block">
-                          {photo.subtitle}
-                        </span>
+                        {photo.subtitle && (
+                          <span className="text-[8.5px] uppercase tracking-[0.18em] opacity-90 font-medium block">
+                            {photo.subtitle}
+                          </span>
+                        )}
                       </div>
                     </>
                   ) : (
                     <>
                       {/* Rich Gradient Vignette Background */}
-                      <div className={`absolute inset-0 bg-gradient-to-br ${photo.tint} opacity-85 transition-transform duration-700 group-hover:scale-105`} />
+                      <div className={`absolute inset-0 bg-gradient-to-br ${tint} opacity-85 transition-transform duration-700 group-hover:scale-105`} />
 
                       {/* Decorative Arch Floral Motif Overlay */}
                       <svg className="absolute inset-0 size-full opacity-20 pointer-events-none" viewBox="0 0 100 120" fill="none">
@@ -283,9 +258,11 @@ export function GallerySection({ onModalToggle }: { onModalToggle?: (isOpen: boo
                         <span className="font-display text-sm font-bold tracking-wide drop-shadow-md">
                           {photo.caption}
                         </span>
-                        <span className="text-[9.5px] uppercase tracking-[0.2em] opacity-90 font-medium">
-                          {photo.subtitle}
-                        </span>
+                        {photo.subtitle && (
+                          <span className="text-[9.5px] uppercase tracking-[0.2em] opacity-90 font-medium">
+                            {photo.subtitle}
+                          </span>
+                        )}
                       </div>
                     </>
                   )}
@@ -293,9 +270,13 @@ export function GallerySection({ onModalToggle }: { onModalToggle?: (isOpen: boo
 
                 {/* Card Footer Tag */}
                 <div className="flex items-center justify-between pt-1 px-1">
-                  <span className="text-[9px] font-bold uppercase tracking-widest text-amber-900 bg-amber-500/15 px-2 py-0.5 rounded-full border border-gold/30">
-                    {photo.date}
-                  </span>
+                  {photo.date ? (
+                    <span className="text-[9px] font-bold uppercase tracking-widest text-amber-900 bg-amber-500/15 px-2 py-0.5 rounded-full border border-gold/30">
+                      {photo.date}
+                    </span>
+                  ) : (
+                    <span />
+                  )}
                   {isCenter && (
                     <div className="flex items-center gap-1 text-[8.5px] uppercase font-bold tracking-wider text-amber-900">
                       <Maximize2 className="size-2.5" />
@@ -333,14 +314,14 @@ export function GallerySection({ onModalToggle }: { onModalToggle?: (isOpen: boo
         initial={{ opacity: 0, y: 25 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45, delay: 0.45, ease: "easeOut" }}
-        className="mt-2 flex items-center gap-2"
+        className="mt-2 flex items-center justify-center gap-1.5 max-w-[280px] overflow-x-auto no-scrollbar py-1"
       >
-        {PHOTOS.map((photo, idx) => (
+        {photosList.map((photo, idx) => (
           <button
-            key={photo.id}
+            key={photo.id || idx}
             aria-label={`Go to photo ${idx + 1}`}
             onClick={() => setI(idx)}
-            className={`h-1.5 rounded-full transition-all duration-300 ${
+            className={`h-1.5 rounded-full transition-all duration-300 flex-shrink-0 ${
               idx === i ? "w-6 bg-amber-900" : "w-1.5 bg-amber-900/30 hover:bg-amber-900/50"
             }`}
           />
@@ -381,7 +362,7 @@ export function GallerySection({ onModalToggle }: { onModalToggle?: (isOpen: boo
               {/* Top Handle bar / Header */}
               <div className="w-full flex items-center justify-between pt-1 px-1">
                 <span className="font-mono text-xs font-bold text-amber-900/90 bg-amber-500/10 px-2.5 py-1 rounded-full border border-gold/30">
-                  0{modalIndex + 1} / 0{total}
+                  {formatNum(modalIndex + 1)} / {formatNum(total)}
                 </span>
 
                 <span className="font-display text-sm font-bold uppercase tracking-wider text-amber-950">
@@ -401,7 +382,7 @@ export function GallerySection({ onModalToggle }: { onModalToggle?: (isOpen: boo
               <div className="relative my-auto w-full max-w-[265px] aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl border-2 border-gold/50 flex flex-col items-center justify-center group my-1">
                 {activeModalPhoto.image ? (
                   <>
-                    <img
+                    <ResponsiveImage
                       src={activeModalPhoto.image}
                       alt={activeModalPhoto.caption}
                       className="absolute inset-0 size-full object-cover"
@@ -411,17 +392,21 @@ export function GallerySection({ onModalToggle }: { onModalToggle?: (isOpen: boo
                       <h3 className="font-display text-lg font-bold tracking-wide drop-shadow-md">
                         {activeModalPhoto.caption}
                       </h3>
-                      <span className="text-[9.5px] uppercase tracking-[0.2em] opacity-90 font-medium block">
-                        {activeModalPhoto.subtitle}
-                      </span>
-                      <span className="mt-1 text-[8.5px] font-bold uppercase tracking-widest text-amber-950 bg-white/90 px-2.5 py-0.5 rounded-full shadow-sm inline-block">
-                        {activeModalPhoto.date}
-                      </span>
+                      {activeModalPhoto.subtitle && (
+                        <span className="text-[9.5px] uppercase tracking-[0.2em] opacity-90 font-medium block">
+                          {activeModalPhoto.subtitle}
+                        </span>
+                      )}
+                      {activeModalPhoto.date && (
+                        <span className="mt-1 text-[8.5px] font-bold uppercase tracking-widest text-amber-950 bg-white/90 px-2.5 py-0.5 rounded-full shadow-sm inline-block">
+                          {activeModalPhoto.date}
+                        </span>
+                      )}
                     </div>
                   </>
                 ) : (
                   <>
-                    <div className={`absolute inset-0 bg-gradient-to-br ${activeModalPhoto.tint} opacity-90`} />
+                    <div className={`absolute inset-0 bg-gradient-to-br ${modalTint} opacity-90`} />
 
                     {/* Decorative Arch Overlay */}
                     <svg className="absolute inset-0 size-full opacity-25 pointer-events-none" viewBox="0 0 100 120" fill="none">
@@ -436,12 +421,16 @@ export function GallerySection({ onModalToggle }: { onModalToggle?: (isOpen: boo
                       <h3 className="font-display text-xl font-bold tracking-wide drop-shadow-md">
                         {activeModalPhoto.caption}
                       </h3>
-                      <span className="text-[10px] uppercase tracking-[0.2em] opacity-90 font-medium">
-                        {activeModalPhoto.subtitle}
-                      </span>
-                      <span className="mt-0.5 text-[9px] font-bold uppercase tracking-widest text-amber-900 bg-white/90 px-2.5 py-0.5 rounded-full shadow-sm">
-                        {activeModalPhoto.date}
-                      </span>
+                      {activeModalPhoto.subtitle && (
+                        <span className="text-[10px] uppercase tracking-[0.2em] opacity-90 font-medium">
+                          {activeModalPhoto.subtitle}
+                        </span>
+                      )}
+                      {activeModalPhoto.date && (
+                        <span className="mt-0.5 text-[9px] font-bold uppercase tracking-widest text-amber-900 bg-white/90 px-2.5 py-0.5 rounded-full shadow-sm">
+                          {activeModalPhoto.date}
+                        </span>
+                      )}
                     </div>
                   </>
                 )}
@@ -459,12 +448,12 @@ export function GallerySection({ onModalToggle }: { onModalToggle?: (isOpen: boo
                 </button>
 
                 {/* Pagination Dots */}
-                <div className="flex items-center gap-1.5">
-                  {PHOTOS.map((_, idx) => (
+                <div className="flex items-center justify-center gap-1.5 max-w-[160px] sm:max-w-[200px] overflow-x-auto no-scrollbar py-1">
+                  {photosList.map((photo, idx) => (
                     <button
-                      key={`modal-dot-${idx}`}
+                      key={`modal-dot-${photo.id || idx}`}
                       onClick={() => setModalIndex(idx)}
-                      className={`h-2 rounded-full transition-all duration-300 ${
+                      className={`h-2 rounded-full transition-all duration-300 flex-shrink-0 ${
                         idx === modalIndex ? "w-5 bg-amber-900" : "w-2 bg-amber-900/30"
                       }`}
                     />

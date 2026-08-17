@@ -50,7 +50,7 @@ export function CountdownSection() {
             >
               {/* Arch Frame PNG Background Asset */}
               <img
-                src="/assets/arch-frame-card.png"
+                src="/assets/arch-frame-card.webp"
                 alt="Arch Frame"
                 className="absolute inset-0 size-full object-contain pointer-events-none drop-shadow-md select-none"
               />

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence } from "framer-motion";
+import { ResponsiveImage } from "@/components/ui/ResponsiveImage";
 import {
   CalendarHeart,
   Camera,
@@ -28,6 +29,9 @@ import { BlessingsSection } from "./sections/BlessingsSection";
 import { VenueSection } from "./sections/VenueSection";
 import { ThankYouSection } from "./sections/ThankYouSection";
 
+import { useAssetPreloader } from "@/hooks/useAssetPreloader";
+import { WeddingPreloader } from "./WeddingPreloader";
+
 const SECTIONS = [
   { id: "home", label: "Home", icon: Gem, bg: "arch", render: HomeSection },
   { id: "events", label: "Events", icon: CalendarHeart, bg: "courtyard", render: EventsSection },
@@ -41,6 +45,7 @@ const SECTIONS = [
 ] as const;
 
 export function WeddingApp() {
+  const { isLoading, progress, statusText } = useAssetPreloader();
   const [active, setActive] = useState(0);
   const [showIntro, setShowIntro] = useState(true);
   const [isShowerActive, setIsShowerActive] = useState(false);
@@ -108,6 +113,9 @@ export function WeddingApp() {
 
   return (
     <div className="relative grid h-[100svh] w-full place-items-center overflow-hidden bg-[oklch(0.18_0.03_150)] p-0 sm:p-3">
+      {/* High-priority Royal Preloader Overlay - Ensures background assets load before rendering section content */}
+      <WeddingPreloader isLoading={isLoading} progress={progress} statusText={statusText} />
+
       {/* Animated Desktop Golden Royal SVG Art Overlay (Left & Right background) */}
       <DesktopGoldenArt />
 
@@ -116,7 +124,7 @@ export function WeddingApp() {
         {/* Background Glowing Shadow Aura (Static, Shifted 10px down) */}
         <div className="absolute inset-0 translate-y-[10px] rounded-full bg-amber-400/40 blur-2xl" />
         <img
-          src="/assets/desktop-side-man.png"
+          src="/assets/desktop-side-man.webp"
           alt="Royal Groom Greeting"
           className="relative h-full w-auto object-contain drop-shadow-[0_0_25px_rgba(251,191,36,0.7)] drop-shadow-[0_15px_30px_rgba(0,0,0,0.5)] opacity-90"
         />
@@ -127,7 +135,7 @@ export function WeddingApp() {
         {/* Background Glowing Shadow Aura (Static, Shifted 10px down) */}
         <div className="absolute inset-0 translate-y-[10px] rounded-full bg-amber-400/40 blur-2xl" />
         <img
-          src="/assets/desktop-side-woman.png"
+          src="/assets/desktop-side-woman.webp"
           alt="Royal Bride Greeting"
           className="relative h-full w-auto object-contain drop-shadow-[0_0_25px_rgba(251,191,36,0.7)] drop-shadow-[0_15px_30px_rgba(0,0,0,0.5)] opacity-90"
         />

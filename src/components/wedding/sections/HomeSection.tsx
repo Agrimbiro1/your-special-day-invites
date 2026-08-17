@@ -10,7 +10,7 @@ export function HomeSection() {
         initial={{ opacity: 0, y: -30, scale: 0.9 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.65, ease: "easeOut" }}
-        src="/assets/ganesha-art.png"
+        src="/assets/ganesha-art.webp"
         alt="Lord Ganesha"
         className="w-24 h-24 sm:w-28 sm:h-28 object-contain drop-shadow-md pointer-events-none select-none relative z-10"
       />
